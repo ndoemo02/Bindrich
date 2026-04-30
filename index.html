@@ -16,7 +16,8 @@
 /* ========== RESET & CUSTOM PROPERTIES ========== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE;line-height:1.6;overflow-x:hidden}
+body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE;line-height:1.6;overflow-x:hidden;cursor:none}
+a,button,input,select,textarea,.clickable{cursor:none}
 
 :root{
   --bg:#CFCABE;
@@ -27,7 +28,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   --accent-hover:#9BB58D;
   --micro:#D8613C;
   --cream:#F9F9F9;
-  --grain-opacity:0.035;
   --font-hero:'Cardo',serif;
   --font-display:'Cormorant Garamond',serif;
   --font-body:'Satoshi','DM Sans',sans-serif;
@@ -46,15 +46,33 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   animation:grain-flicker 8s steps(8) infinite;
 }
 @keyframes grain-flicker{
-  0%,100%{opacity:.025}
-  12.5%{opacity:.038}
-  25%{opacity:.022}
-  37.5%{opacity:.045}
-  50%{opacity:.028}
-  62.5%{opacity:.04}
-  75%{opacity:.03}
-  87.5%{opacity:.042}
+  0%,100%{opacity:.025} 12.5%{opacity:.038} 25%{opacity:.022}
+  37.5%{opacity:.045} 50%{opacity:.028} 62.5%{opacity:.04}
+  75%{opacity:.03} 87.5%{opacity:.042}
 }
+
+/* ========== CUSTOM CURSOR ========== */
+#custom-cursor{
+  position:fixed;pointer-events:none;z-index:10000;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  transform:translate(-50%,-50%);
+  transition:width .25s ease,height .25s ease,background .25s ease,opacity .25s ease;
+  opacity:.8;mix-blend-mode:multiply;
+}
+#custom-cursor.hover{
+  width:24px;height:24px;opacity:.55;
+  background:var(--micro);mix-blend-mode:normal;
+}
+#cursor-trail{
+  position:fixed;pointer-events:none;z-index:9999;
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(177,197,164,.25);
+  transform:translate(-50%,-50%);
+  transition:width .35s ease,height .35s ease,border-color .35s ease,opacity .35s ease;
+  opacity:.5;
+}
+#cursor-trail.hover{width:48px;height:48px;border-color:rgba(216,97,60,.2);opacity:.7}
 
 /* ========== UTILITY ========== */
 .container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
@@ -68,19 +86,74 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-/* ========== HEADER / NAV ========== */
+/* ========== STICKY NAVBAR ========== */
 .site-header{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  padding:1.5rem clamp(1.5rem,5vw,4rem);
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
   display:flex;justify-content:space-between;align-items:center;
-  mix-blend-mode:difference;color:#F9F9F9;
-  transition:padding .3s ease;
+  padding:12px clamp(1.5rem,5vw,3rem);
+  background:rgba(207,202,190,.92);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  transition:padding .3s ease,background .3s ease,backdrop-filter .3s ease;
 }
-.site-header.scrolled{padding:.75rem clamp(1.5rem,5vw,4rem)}
-.logo-text{font-family:var(--font-display);font-size:1.5rem;font-weight:600;letter-spacing:.02em;color:inherit;text-decoration:none}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{color:inherit;text-decoration:none;font-size:.875rem;font-weight:400;letter-spacing:.04em;text-transform:uppercase;transition:opacity .3s}
-.nav-links a:hover{opacity:.6}
+.site-header.scrolled{
+  padding:8px clamp(1.5rem,5vw,3rem);
+  background:rgba(207,202,190,1);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.logo-text{
+  font-family:var(--font-display);font-size:1.8rem;font-weight:600;
+  letter-spacing:.02em;color:var(--text);text-decoration:none;
+  transition:font-size .3s ease;
+  position:relative;z-index:1002;
+}
+.site-header.scrolled .logo-text{font-size:1.5rem}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center}
+.nav-links a{
+  color:var(--text);text-decoration:none;
+  font-family:var(--font-body);font-size:1rem;font-weight:400;
+  letter-spacing:.03em;padding-bottom:4px;
+  border-bottom:2px solid transparent;
+  transition:color .3s,border-color .3s;
+}
+.nav-links a:hover,
+.nav-links a.active{color:var(--accent-hover);border-bottom-color:var(--accent)}
+
+/* Hamburger */
+.hamburger{
+  display:none;position:relative;z-index:1002;
+  width:28px;height:22px;background:none;border:none;padding:0;
+  flex-direction:column;justify-content:space-between;cursor:none;
+}
+.hamburger span{
+  display:block;width:100%;height:2.5px;background:var(--text);
+  border-radius:1px;transition:transform .3s ease,opacity .3s ease;
+}
+.hamburger.open span:nth-child(1){transform:translateY(9.75px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-9.75px) rotate(-45deg)}
+
+/* Mobile menu */
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:900;
+  background:var(--overlay);flex-direction:column;
+  justify-content:center;align-items:center;gap:2.5rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+.mobile-menu.open{opacity:1;pointer-events:auto}
+.mobile-menu a{
+  font-family:var(--font-display);font-size:2rem;color:var(--cream);
+  text-decoration:none;letter-spacing:.03em;
+  transition:color .3s;
+}
+.mobile-menu a:hover{color:var(--accent)}
+.mobile-close{
+  position:absolute;top:24px;right:24px;z-index:902;
+  background:none;border:none;color:var(--cream);
+  font-size:2rem;cursor:none;line-height:1;
+}
 
 /* ========== SECTION 1: HERO ========== */
 .hero{
@@ -90,7 +163,7 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 .hero-image-container{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
   width:min(90vw,900px);height:65vh;z-index:1;
-  will-change:transform;
+  will-change:transform,opacity;
 }
 .hero-image{
   width:100%;height:100%;object-fit:cover;
@@ -99,8 +172,9 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 }
 .hero-content{
   position:relative;z-index:2;text-align:center;
-  padding:2rem;max-width:700px;
-  margin-top:-4rem;
+  padding:2rem;max-width:700px;margin-top:-4rem;
+  will-change:transform,opacity;
+  transition:none;
 }
 .hero-tag{
   font-family:var(--font-nums);font-size:.8rem;letter-spacing:.25em;text-transform:uppercase;
@@ -115,12 +189,15 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   font-family:var(--font-display);font-size:clamp(1.25rem,2.5vw,1.75rem);
   color:var(--text-muted);font-weight:400;margin-bottom:2rem;
 }
+.hero-cta-wrapper{
+  display:inline-flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;
+}
 .hero-cta{
   display:inline-flex;align-items:center;gap:.75rem;
   padding:.9rem 2.2rem;
   background:var(--accent);color:var(--text);
   font-family:var(--font-body);font-size:.9rem;font-weight:500;
-  border:none;cursor:pointer;text-decoration:none;
+  border:none;cursor:none;text-decoration:none;
   letter-spacing:.03em;
   transition:background .3s,transform .3s;
   position:relative;
@@ -128,19 +205,31 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 .hero-cta:hover{background:var(--accent-hover);transform:translateY(-2px)}
 .hero-cta::after{content:'';position:absolute;inset:-4px;border:1px solid var(--accent);opacity:.5;transition:opacity .3s}
 .hero-cta:hover::after{opacity:1}
+.hero-cta-secondary{
+  display:inline-flex;align-items:center;gap:.75rem;
+  padding:.9rem 2.2rem;
+  background:transparent;color:var(--text);
+  font-family:var(--font-body);font-size:.9rem;font-weight:500;
+  border:2px solid var(--accent);cursor:none;text-decoration:none;
+  letter-spacing:.03em;
+  transition:all .3s ease;
+}
+.hero-cta-secondary:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}
 
+/* Scroll indicator */
 .scroll-indicator{
-  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:3;
-  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
   color:var(--text-muted);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
 }
-.scroll-arrow{
-  width:24px;height:24px;border-right:1.5px solid var(--text-muted);border-bottom:1.5px solid var(--text-muted);
-  transform:rotate(45deg);animation:scroll-bounce 2s ease-in-out infinite;
+.scroll-arrow-svg{
+  width:28px;height:28px;stroke:var(--accent);stroke-width:2;
+  fill:none;animation:scroll-pulse 1.5s ease-in-out infinite;
 }
-@keyframes scroll-bounce{
-  0%,100%{transform:rotate(45deg) translateY(0);opacity:.3}
-  50%{transform:rotate(45deg) translateY(8px);opacity:1}
+@keyframes scroll-pulse{
+  0%{opacity:.6;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(6px)}
+  100%{opacity:.6;transform:translateY(0)}
 }
 
 /* ========== SECTION 2: PRODUCT SHOWCASE ========== */
@@ -151,7 +240,7 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 }
 .product-grid.row-reverse{grid-template-columns:1fr 2fr}
 .product-card{
-  position:relative;overflow:hidden;cursor:pointer;
+  position:relative;overflow:hidden;cursor:none;
   min-height:380px;background:var(--overlay);
   transition:transform .5s cubic-bezier(.22,1,.36,1);
   isolation:isolate;
@@ -231,8 +320,8 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   height:2px;z-index:0;overflow:visible;
 }
 .process-connector path{
-  fill:none;stroke:var(--overlay);stroke-width:1.5;
-  stroke-dasharray:4 6;stroke-linecap:round;
+  fill:none;stroke:#C2A990;stroke-width:1.5;
+  stroke-dasharray:6 8;stroke-linecap:round;
 }
 .process-step{
   flex:1;text-align:center;position:relative;z-index:1;
@@ -323,13 +412,12 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 .signature-svg{
   max-width:520px;width:80%;height:auto;margin:0 auto;display:block;
 }
-.signature-svg path{
-  fill:none;stroke:var(--micro);stroke-width:2.2;
+.signature-svg .sign-path{
+  fill:none;stroke:var(--micro);stroke-width:1.8;
   stroke-linecap:round;stroke-linejoin:round;
-  stroke-dasharray:2000;stroke-dashoffset:2000;
-  transition:stroke-dashoffset 2.5s cubic-bezier(.22,1,.36,1);
+  stroke-dasharray:2500;stroke-dashoffset:2500;
 }
-.signature-svg.signed path{stroke-dashoffset:0}
+.signature-svg.signed .sign-path{stroke-dashoffset:0;transition:stroke-dashoffset 3s ease-out}
 .signature-name{
   font-family:var(--font-display);font-size:1.35rem;color:var(--text);
   margin-top:1.5rem;font-style:italic;
@@ -378,13 +466,18 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   flex-wrap:wrap;gap:.5rem;font-size:.8rem;color:rgba(249,249,249,.4);
 }
 
-/* ========== TABLET / MOBILE ========== */
+/* ========== RESPONSIVE ========== */
 @media(max-width:768px){
+  body{cursor:auto}
+  a,button,input,select,textarea,.clickable{cursor:pointer}
+  #custom-cursor,#cursor-trail{display:none}
+
+  .hamburger{display:flex}
+  .mobile-menu{display:flex}
   .nav-links{display:none}
   .hero-image-container{width:95vw;height:50vh}
-  .product-grid,.product-grid.row-reverse{
-    grid-template-columns:1fr;gap:1rem;
-  }
+  .hero-content{margin-top:-2rem}
+  .product-grid,.product-grid.row-reverse{grid-template-columns:1fr;gap:1rem}
   .product-card{min-height:280px}
   .process-steps{flex-direction:column;gap:2rem}
   .process-connector{display:none}
@@ -395,7 +488,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   .footer-grid{grid-template-columns:1fr 1fr;gap:2rem 1.5rem}
   .philosophy-quote{font-size:1.5rem}
   .hero-title{font-size:2.5rem}
-  .hero-content{margin-top:-2rem}
   .product-card-label{font-size:1.5rem}
   .process-step-num{font-size:2rem}
 }
@@ -406,6 +498,8 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   .location-num{font-size:2rem}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
+  .hero-cta-wrapper{flex-direction:column;gap:.75rem}
+  .hero-cta,.hero-cta-secondary{width:100%;justify-content:center}
 }
 </style>
 </head>
@@ -414,25 +508,15 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 <!-- ========== SVG DEFINITIONS ========== -->
 <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Facebook -->
     <symbol id="icon-fb" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
-    <!-- Instagram -->
     <symbol id="icon-ig" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2"/></symbol>
-    <!-- Phone -->
     <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
-    <!-- Mail -->
     <symbol id="icon-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
-    <!-- Location -->
     <symbol id="icon-loc" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-    <!-- Process: Grain -->
     <symbol id="icon-grain" viewBox="0 0 24 24"><circle cx="9" cy="12" r="3"/><circle cx="17" cy="8" r="2"/><circle cx="15" cy="17" r="2"/><circle cx="7" cy="5" r="1.5"/><circle cx="19" cy="13" r="1.5"/></symbol>
-    <!-- Process: Sourdough (jar) -->
     <symbol id="icon-sourdough" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="4" rx="1"/><path d="M6 6h12v12a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V6z"/><line x1="9" y1="10" x2="9" y2="16"/><line x1="12" y1="10" x2="12" y2="16"/><line x1="15" y1="10" x2="15" y2="16"/></symbol>
-    <!-- Process: Oven -->
     <symbol id="icon-oven" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="6" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="18" cy="15" r="1.5"/></symbol>
-    <!-- Process: Shop -->
     <symbol id="icon-shop" viewBox="0 0 24 24"><path d="M3 9l1.5-4h15L21 9"/><path d="M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/><line x1="9" y1="21" x2="9" y2="13"/><line x1="15" y1="21" x2="15" y2="13"/><line x1="3" y1="9" x2="21" y2="9"/></symbol>
-    <!-- YouTube -->
     <symbol id="icon-yt" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.94 29.94 0 0 0 1 11.75a29.94 29.94 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29.94 29.94 0 0 0 .46-5.25 29.94 29.94 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></symbol>
   </defs>
 </svg>
@@ -440,18 +524,31 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 <!-- ========== GRAIN OVERLAY ========== -->
 <div id="grain-overlay" aria-hidden="true"></div>
 
-<!-- ========== HEADER ========== -->
-<header class="site-header" id="header">
-  <a href="/" class="logo-text">Bindrich</a>
-  <nav>
-    <ul class="nav-links">
-      <li><a href="#produkty">Produkty</a></li>
-      <li><a href="#filozofia">Filozofia</a></li>
-      <li><a href="#lokalizacje">Piekarnie</a></li>
-      <li><a href="#kontakt">Kontakt</a></li>
+<!-- ========== CUSTOM CURSOR ========== -->
+<div id="custom-cursor" aria-hidden="true"></div>
+<div id="cursor-trail" aria-hidden="true"></div>
+
+<!-- ========== STICKY NAVBAR ========== -->
+<header class="site-header" id="header" role="banner">
+  <a href="#hero" class="logo-text" aria-label="Piekarnia Bindrich — strona główna">Bindrich</a>
+  <nav aria-label="Menu nawigacyjne">
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#produkty" data-section="produkty">Produkty</a></li>
+      <li><a href="#filozofia" data-section="filozofia">Nasza firma</a></li>
+      <li><a href="#kontakt" data-section="kontakt">Kontakt</a></li>
     </ul>
   </nav>
+  <button class="hamburger" id="hamburger" aria-label="Otwórz menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- ========== MOBILE MENU ========== -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#produkty" data-mobile-link>Produkty</a>
+  <a href="#filozofia" data-mobile-link>Nasza firma</a>
+  <a href="#kontakt" data-mobile-link>Kontakt</a>
+</div>
 
 <!-- ========== SECTION 1: HERO ========== -->
 <section class="hero" id="hero">
@@ -463,15 +560,21 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
       loading="eager"
     />
   </div>
-  <div class="hero-content">
+  <div class="hero-content" id="hero-content">
     <span class="hero-tag">Piekary Śląskie · od 1990</span>
     <h1 class="hero-title">Naturalnie Pyszne</h1>
     <p class="hero-subtitle">Piekarnia Bindrich</p>
-    <a href="#produkty" class="hero-cta">Odkryj ofertę →</a>
+    <div class="hero-cta-wrapper">
+      <a href="#produkty" class="hero-cta">Odkryj ofertę →</a>
+      <a href="#lokalizacje" class="hero-cta-secondary">Znajdź piekarnię →</a>
+    </div>
   </div>
   <div class="scroll-indicator" aria-hidden="true">
     <span>Przewiń</span>
-    <div class="scroll-arrow"></div>
+    <svg class="scroll-arrow-svg" viewBox="0 0 24 30" width="24" height="30">
+      <line x1="12" y1="4" x2="12" y2="20"/>
+      <polyline points="5,14 12,21 19,14"/>
+    </svg>
   </div>
 </section>
 
@@ -482,7 +585,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
     <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;color:var(--text)" class="reveal">Wypiekamy z pasją</h2>
   </div>
 
-  <!-- Row 1: wide + narrow -->
   <div class="product-grid reveal">
     <article class="product-card">
       <img class="product-card-img" src="https://images.unsplash.com/photo-1549931319-a545799f18c3?auto=format&fit=crop&w=800&q=80" alt="Wypieki — chleby i bułki" loading="lazy">
@@ -504,7 +606,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
     </article>
   </div>
 
-  <!-- Row 2: reverse (narrow + wide) -->
   <div class="product-grid row-reverse reveal" style="margin-top:1.25rem">
     <article class="product-card">
       <img class="product-card-img" src="https://images.unsplash.com/photo-1488477185556-3e7a2d65dc32?auto=format&fit=crop&w=600&q=80" alt="Ciasta — domowe wypieki" loading="lazy">
@@ -546,7 +647,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   </div>
 
   <div class="process-steps reveal">
-    <!-- SVG wavy connector line -->
     <svg class="process-connector" viewBox="0 0 1200 40" preserveAspectRatio="none" style="width:calc(100% - clamp(3rem,10vw,8rem));left:clamp(1.5rem,5vw,4rem)">
       <path d="M0,20 C150,10 250,30 400,20 C550,10 650,30 800,20 C950,10 1050,30 1200,20"
             stroke="#C2A990" stroke-width="1.5" fill="none"
@@ -561,7 +661,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
       <h3 class="process-step-title">Ziarno</h3>
       <p class="process-step-desc">Wyselekcjonowane mąki od sprawdzonych młynów — podstawa każdego bochenka.</p>
     </div>
-
     <div class="process-step">
       <div class="process-step-icon">
         <svg viewBox="0 0 24 24"><use href="#icon-sourdough"/></svg>
@@ -570,7 +669,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
       <h3 class="process-step-title">Zakwas</h3>
       <p class="process-step-desc">Naturalny zakwas prowadzony od pokoleń — bez drożdży przemysłowych, bez pośpiechu.</p>
     </div>
-
     <div class="process-step">
       <div class="process-step-icon">
         <svg viewBox="0 0 24 24"><use href="#icon-oven"/></svg>
@@ -579,7 +677,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
       <h3 class="process-step-title">Piec</h3>
       <p class="process-step-desc">Tradycyjne piece z kamieniem ceramicznym — równomierne ciepło i chrupiąca skórka.</p>
     </div>
-
     <div class="process-step">
       <div class="process-step-icon">
         <svg viewBox="0 0 24 24"><use href="#icon-shop"/></svg>
@@ -657,13 +754,10 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
     <span class="signature-label">Z rodzinnego domu prosto na Wasz stół</span>
 
     <svg class="signature-svg" id="sig-svg" viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg">
-      <!-- Jacek -->
-      <path d="M18,55 C22,40 30,32 40,28 C50,24 58,32 62,40 C66,48 64,58 58,62
+      <path class="sign-path" d="M18,55 C22,40 30,32 40,28 C50,24 58,32 62,40 C66,48 64,58 58,62
                C52,66 46,60 48,52 C50,44 58,38 68,35 C78,32 88,36 92,44
-               C96,52 92,62 84,65 C76,68 70,62 72,54"
-            id="sig-jacek"/>
-      <!-- Bindrich -->
-      <path d="M118,60 C125,44 135,32 148,28 C161,24 172,30 178,42
+               C96,52 92,62 84,65 C76,68 70,62 72,54"/>
+      <path class="sign-path" d="M118,60 C125,44 135,32 148,28 C161,24 172,30 178,42
                C184,54 180,68 172,72 C164,76 156,70 158,60 C160,50 168,42 180,40
                C192,38 202,42 208,52 C214,62 210,74 202,78 C194,82 186,76 188,66
                C190,56 198,48 208,46 C218,44 228,48 234,58
@@ -678,8 +772,7 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
                C448,60 444,72 436,76 C428,80 422,72 424,62
                M476,54 C482,40 492,30 504,26 C516,22 526,30 530,40
                C534,50 530,62 522,66 C514,70 508,62 510,52
-               C512,42 520,36 530,34 C540,32 548,38 552,48"
-            id="sig-bindrich"/>
+               C512,42 520,36 530,34 C540,32 548,38 552,48"/>
     </svg>
 
     <p class="signature-name">Jacek Bindrich</p>
@@ -744,9 +837,8 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
       </ul>
     </div>
   </div>
-
   <div class="footer-bottom">
-    <span>© 2026 Piekarnia Bindrich. Wszelkie prawa zastrzeżone.</span>
+    <span>&copy; 2026 Piekarnia Bindrich. Wszelkie prawa zastrzeżone.</span>
     <span>NIP 645-239-38-05</span>
   </div>
 </footer>
@@ -755,6 +847,75 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 <script>
 (function(){
   'use strict';
+
+  // ========== DOM REFS ==========
+  const header = document.getElementById('header');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = document.querySelectorAll('[data-mobile-link]');
+  const heroImgContainer = document.getElementById('hero-image-container');
+  const heroContent = document.getElementById('hero-content');
+  const sigSvg = document.getElementById('sig-svg');
+  const cursorDot = document.getElementById('custom-cursor');
+  const cursorTrail = document.getElementById('cursor-trail');
+  const navLinks = document.querySelectorAll('#nav-links a');
+
+  // ========== MOBILE MENU TOGGLE ==========
+  let menuOpen = false;
+
+  function openMenu(){
+    menuOpen = true;
+    hamburger.classList.add('open');
+    mobileMenu.classList.add('open');
+    hamburger.setAttribute('aria-expanded','true');
+    mobileMenu.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu(){
+    menuOpen = false;
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded','false');
+    mobileMenu.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click',() => { menuOpen ? closeMenu() : openMenu(); });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click',() => { closeMenu(); });
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown',(e) => {
+    if(e.key === 'Escape' && menuOpen) closeMenu();
+  });
+
+  // ========== ACTIVE SECTION TRACKING ==========
+  const sectionIds = ['produkty','filozofia','kontakt'];
+  const sectionEls = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    let bestEntry = null;
+    let bestRatio = 0;
+
+    entries.forEach(entry => {
+      if(entry.isIntersecting && entry.intersectionRatio > bestRatio){
+        bestRatio = entry.intersectionRatio;
+        bestEntry = entry;
+      }
+    });
+
+    if(bestEntry){
+      navLinks.forEach(link => {
+        const section = link.getAttribute('data-section');
+        link.classList.toggle('active', section === bestEntry.target.id);
+      });
+    }
+  },{threshold:[0,0.2,0.4,0.6,0.8,1],rootMargin:'-80px 0px -10% 0px'});
+
+  sectionEls.forEach(el => sectionObserver.observe(el));
 
   // ========== INTERSECTION OBSERVER — REVEAL ON SCROLL ==========
   const revealEls = document.querySelectorAll('.reveal');
@@ -770,7 +931,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   revealEls.forEach(el => revealObserver.observe(el));
 
   // ========== SIGNATURE SVG ANIMATION ==========
-  const sigSvg = document.getElementById('sig-svg');
   const sigObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if(entry.isIntersecting){
@@ -782,20 +942,31 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
 
   if(sigSvg) sigObserver.observe(sigSvg);
 
-  // ========== HERO PARALLAX ==========
-  const heroImgContainer = document.getElementById('hero-image-container');
+  // ========== HERO PARALLAX + CONTENT FADE ==========
   let ticking = false;
 
   function updateParallax(){
-    if(!heroImgContainer) return;
     const scrollY = window.scrollY;
     const heroHeight = window.innerHeight;
+
     if(scrollY <= heroHeight){
       const ratio = scrollY / heroHeight;
-      const translateY = ratio * -80;
-      const scale = 1 + (ratio * 0.08);
-      heroImgContainer.style.transform = `translateX(-50%) translateY(${translateY}px) scale(${scale})`;
-      heroImgContainer.style.opacity = 1 - (ratio * 0.6);
+
+      // Image parallax
+      if(heroImgContainer){
+        const translateY = ratio * -80;
+        const scale = 1 + (ratio * 0.08);
+        heroImgContainer.style.transform = `translateX(-50%) translateY(${translateY}px) scale(${scale})`;
+        heroImgContainer.style.opacity = 1 - (ratio * 0.6);
+      }
+
+      // Content shrink + fade on scroll (starts after 10vh scroll)
+      if(heroContent){
+        const fadeRatio = Math.max(0, (ratio - 0.1) / 0.4); // fade between 10vh and 50vh
+        const clampedFade = Math.min(1, fadeRatio);
+        heroContent.style.opacity = 1 - clampedFade;
+        heroContent.style.transform = `translateY(${clampedFade * -60}px)`;
+      }
     }
     ticking = false;
   }
@@ -807,17 +978,15 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
     }
   },{passive:true});
 
-  // Initial parallax position
   updateParallax();
 
   // ========== HEADER SCROLL STATE ==========
-  const header = document.getElementById('header');
   let headerTicking = false;
 
   window.addEventListener('scroll',() => {
     if(!headerTicking){
       requestAnimationFrame(() => {
-        if(window.scrollY > 100){
+        if(window.scrollY > 80){
           header.classList.add('scrolled');
         } else {
           header.classList.remove('scrolled');
@@ -829,7 +998,6 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
   },{passive:true});
 
   // ========== SMOOTH REVEAL STAGGER ==========
-  // Add incremental delays to reveal elements within same section
   const sections = document.querySelectorAll('.section,.philosophy,.signature-section');
   sections.forEach(section => {
     const items = section.querySelectorAll('.reveal');
@@ -838,11 +1006,53 @@ body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE
     });
   });
 
-  // Stagger locations
   const locItems = document.querySelectorAll('.location-item.reveal');
   locItems.forEach((item,i) => {
     item.style.transitionDelay = (i * 0.06) + 's';
   });
+
+  // ========== CUSTOM CURSOR (desktop only) ==========
+  if(window.matchMedia('(min-width:769px)').matches && cursorDot && cursorTrail){
+    let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
+
+    document.addEventListener('mousemove',(e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+    });
+
+    function updateTrail(){
+      trailX += (mouseX - trailX) * 0.15;
+      trailY += (mouseY - trailY) * 0.15;
+      cursorTrail.style.left = trailX + 'px';
+      cursorTrail.style.top = trailY + 'px';
+      requestAnimationFrame(updateTrail);
+    }
+    updateTrail();
+
+    // Expand cursor on interactive elements
+    const hoverTargets = document.querySelectorAll('a,button,.product-card,.hero-cta,.hero-cta-secondary');
+    hoverTargets.forEach(el => {
+      el.addEventListener('mouseenter',() => {
+        cursorDot.classList.add('hover');
+        cursorTrail.classList.add('hover');
+      });
+      el.addEventListener('mouseleave',() => {
+        cursorDot.classList.remove('hover');
+        cursorTrail.classList.remove('hover');
+      });
+    });
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave',() => {
+      cursorDot.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter',() => {
+      cursorDot.style.opacity = '.8';
+    });
+  }
 
 })();
 </script>
