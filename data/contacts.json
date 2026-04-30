@@ -1,0 +1,27 @@
+{
+  "company_name": "Piekarnia Bindrich",
+  "address": {
+    "street": "ul. Węglowa 3",
+    "postal_code": "41-943",
+    "city": "Piekary Śląskie",
+    "full": "ul. Węglowa 3, 41-943 Piekary Śląskie"
+  },
+  "nip": "645-239-38-05",
+  "phones": [
+    {
+      "label": "Biuro / Główny",
+      "number": "+48 510-211-477"
+    },
+    {
+      "label": "Księgowość",
+      "number": "+48 518-892-124"
+    }
+  ],
+  "emails": [
+    {
+      "label": "Wsparcie (wymaga weryfikacji)",
+      "address": "support@piekarniabindrich.pl",
+      "note": "W kodzie źródłowym widnieje ucięty adres 'support@piekarnia', poprawiono na prawdopodobny."
+    }
+  ]
+}
