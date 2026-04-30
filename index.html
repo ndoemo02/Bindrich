@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Piekarnia Bindrich — Naturalnie Pyszne</title>
-<meta name="description" content="Piekarnia Bindrich z Piekar Śląskich — tradycyjne wypieki na naturalnym zakwasie, bez polepszaczy i konserwantów. 41 punktów na Śląsku.">
+<meta name="description" content="Piekarnia Bindrich z Piekar Śląskich — tradycyjne wypieki na naturalnym zakwasie. 41 punktów na Śląsku. Od 1990 roku.">
 
-<!-- ========== FONTS ========== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
@@ -16,398 +15,362 @@
 /* ========== RESET & CUSTOM PROPERTIES ========== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#CFCABE;line-height:1.6;overflow-x:hidden;cursor:none}
-a,button,input,select,textarea,.clickable{cursor:none}
+body{font-family:'Satoshi','DM Sans',sans-serif;color:#2B2520;background:#F9EDE4;line-height:1.6;overflow-x:hidden;cursor:none}
+a,button,.product-card,.clickable{cursor:none}
 
 :root{
-  --bg:#CFCABE;
-  --overlay:#C2A990;
-  --text:#2B2520;
+  --warm-light:#F9EDE4;
+  --warm-dark:#3B2920;
+  --text-light:#F5EBE0;
+  --text-dark:#2B2520;
   --text-muted:#615852;
   --accent:#B1C5A4;
   --accent-hover:#9BB58D;
   --micro:#D8613C;
+  --overlay:#C2A990;
   --cream:#F9F9F9;
   --font-hero:'Cardo',serif;
   --font-display:'Cormorant Garamond',serif;
   --font-body:'Satoshi','DM Sans',sans-serif;
   --font-nums:'DM Serif Display',serif;
-  --max-w:1400px;
 }
-
-/* ========== SVG FILTERS (hidden) ========== */
-.svg-defs{position:absolute;width:0;height:0;overflow:hidden}
 
 /* ========== GRAIN OVERLAY ========== */
 #grain-overlay{
-  position:fixed;inset:0;pointer-events:none;z-index:9998;
+  position:fixed;inset:0;pointer-events:none;z-index:9997;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   background-repeat:repeat;
   animation:grain-flicker 8s steps(8) infinite;
 }
 @keyframes grain-flicker{
-  0%,100%{opacity:.025} 12.5%{opacity:.038} 25%{opacity:.022}
-  37.5%{opacity:.045} 50%{opacity:.028} 62.5%{opacity:.04}
-  75%{opacity:.03} 87.5%{opacity:.042}
+  0%,100%{opacity:.02} 12.5%{opacity:.032} 25%{opacity:.018}
+  37.5%{opacity:.04} 50%{opacity:.025} 62.5%{opacity:.035}
+  75%{opacity:.028} 87.5%{opacity:.038}
 }
 
 /* ========== CUSTOM CURSOR ========== */
 #custom-cursor{
   position:fixed;pointer-events:none;z-index:10000;
   width:8px;height:8px;border-radius:50%;
-  background:var(--accent);
-  transform:translate(-50%,-50%);
-  transition:width .25s ease,height .25s ease,background .25s ease,opacity .25s ease;
+  background:var(--accent);transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,background .25s,opacity .25s;
   opacity:.8;mix-blend-mode:multiply;
 }
-#custom-cursor.hover{
-  width:24px;height:24px;opacity:.55;
-  background:var(--micro);mix-blend-mode:normal;
-}
+#custom-cursor.hover{width:24px;height:24px;opacity:.55;background:var(--micro);mix-blend-mode:normal}
 #cursor-trail{
   position:fixed;pointer-events:none;z-index:9999;
   width:32px;height:32px;border-radius:50%;
-  border:1px solid rgba(177,197,164,.25);
-  transform:translate(-50%,-50%);
-  transition:width .35s ease,height .35s ease,border-color .35s ease,opacity .35s ease;
-  opacity:.5;
+  border:1px solid rgba(177,197,164,.25);transform:translate(-50%,-50%);
+  transition:width .35s,height .35s,border-color .35s,opacity .35s;opacity:.5;
 }
 #cursor-trail.hover{width:48px;height:48px;border-color:rgba(216,97,60,.2);opacity:.7}
 
 /* ========== UTILITY ========== */
-.container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
-.section{padding:clamp(4rem,10vh,8rem) 0;position:relative}
-.section-label{
-  font-family:var(--font-nums);font-size:.875rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--micro);display:block;margin-bottom:.5rem;
-}
+.container{max-width:1400px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
+.section{padding:clamp(5rem,12vh,9rem) 0;position:relative}
+.section-light{background:var(--warm-light);color:var(--text-dark)}
+.section-dark{background:var(--warm-dark);color:var(--text-light)}
+.section-overlay{background:var(--overlay);color:var(--text-dark)}
 
 /* ========== REVEAL ON SCROLL ========== */
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-30px);transition:opacity .8s .1s cubic-bezier(.22,1,.36,1),transform .8s .1s cubic-bezier(.22,1,.36,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(30px);transition:opacity .8s .1s cubic-bezier(.22,1,.36,1),transform .8s .1s cubic-bezier(.22,1,.36,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-stagger{opacity:0;transform:translateY(60px)}
+.reveal-stagger.visible{opacity:1;transform:translateY(0)}
 
 /* ========== STICKY NAVBAR ========== */
 .site-header{
   position:fixed;top:0;left:0;width:100%;z-index:1000;
   display:flex;justify-content:space-between;align-items:center;
-  padding:12px clamp(1.5rem,5vw,3rem);
-  background:rgba(207,202,190,.92);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  transition:padding .3s ease,background .3s ease,backdrop-filter .3s ease;
+  padding:14px clamp(1.5rem,5vw,3rem);
+  background:transparent;
+  transition:padding .3s,background .3s,backdrop-filter .3s;
 }
 .site-header.scrolled{
   padding:8px clamp(1.5rem,5vw,3rem);
-  background:rgba(207,202,190,1);
+  background:rgba(249,237,228,.94);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 1px 0 rgba(43,37,32,.06);
 }
 .logo-text{
   font-family:var(--font-display);font-size:1.8rem;font-weight:600;
-  letter-spacing:.02em;color:var(--text);text-decoration:none;
-  transition:font-size .3s ease;
-  position:relative;z-index:1002;
+  letter-spacing:.02em;color:var(--text-dark);text-decoration:none;
+  transition:font-size .3s;position:relative;z-index:1002;
 }
 .site-header.scrolled .logo-text{font-size:1.5rem}
 .nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center}
 .nav-links a{
-  color:var(--text);text-decoration:none;
+  color:var(--text-dark);text-decoration:none;
   font-family:var(--font-body);font-size:1rem;font-weight:400;
   letter-spacing:.03em;padding-bottom:4px;
-  border-bottom:2px solid transparent;
-  transition:color .3s,border-color .3s;
+  border-bottom:2px solid transparent;transition:color .3s,border-color .3s;
 }
-.nav-links a:hover,
-.nav-links a.active{color:var(--accent-hover);border-bottom-color:var(--accent)}
+.nav-links a:hover,.nav-links a.active{color:var(--accent-hover);border-bottom-color:var(--accent)}
 
-/* Hamburger */
 .hamburger{
   display:none;position:relative;z-index:1002;
   width:28px;height:22px;background:none;border:none;padding:0;
-  flex-direction:column;justify-content:space-between;cursor:none;
+  flex-direction:column;justify-content:space-between;
 }
-.hamburger span{
-  display:block;width:100%;height:2.5px;background:var(--text);
-  border-radius:1px;transition:transform .3s ease,opacity .3s ease;
-}
+.hamburger span{display:block;width:100%;height:2.5px;background:var(--text-dark);border-radius:1px;transition:transform .3s,opacity .3s}
 .hamburger.open span:nth-child(1){transform:translateY(9.75px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-9.75px) rotate(-45deg)}
 
-/* Mobile menu */
 .mobile-menu{
   display:none;position:fixed;inset:0;z-index:900;
   background:var(--overlay);flex-direction:column;
   justify-content:center;align-items:center;gap:2.5rem;
-  opacity:0;pointer-events:none;
-  transition:opacity .35s ease;
+  opacity:0;pointer-events:none;transition:opacity .35s;
 }
 .mobile-menu.open{opacity:1;pointer-events:auto}
-.mobile-menu a{
-  font-family:var(--font-display);font-size:2rem;color:var(--cream);
-  text-decoration:none;letter-spacing:.03em;
-  transition:color .3s;
-}
+.mobile-menu a{font-family:var(--font-display);font-size:2rem;color:var(--cream);text-decoration:none;letter-spacing:.03em;transition:color .3s}
 .mobile-menu a:hover{color:var(--accent)}
-.mobile-close{
-  position:absolute;top:24px;right:24px;z-index:902;
-  background:none;border:none;color:var(--cream);
-  font-size:2rem;cursor:none;line-height:1;
-}
 
 /* ========== SECTION 1: HERO ========== */
 .hero{
-  height:100vh;position:relative;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;background:var(--bg);
+  min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;
+  background:var(--warm-light);overflow:hidden;padding-top:80px;
 }
-.hero-image-container{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:min(90vw,900px);height:65vh;z-index:1;
-  will-change:transform,opacity;
+.hero-wheat{
+  position:absolute;right:clamp(2rem,10vw,8rem);top:50%;transform:translateY(-50%);
+  width:clamp(120px,18vw,220px);height:auto;z-index:1;
+  animation:wheat-sway 6s ease-in-out infinite;
+  opacity:.85;
 }
-.hero-image{
-  width:100%;height:100%;object-fit:cover;
-  filter:grayscale(15%) contrast(105%) sepia(10%);
-  clip-path:polygon(0 8% 100% 0 100% 92% 0 100%);
+@keyframes wheat-sway{
+  0%,100%{transform:translateY(-50%) rotate(-1deg)}
+  50%{transform:translateY(-50%) rotate(2deg)}
+}
+.hero-wheat .wheat-glow{
+  animation:wheat-glow 3s ease-in-out infinite;
+}
+@keyframes wheat-glow{
+  0%,100%{opacity:.6}
+  50%{opacity:1}
 }
 .hero-content{
-  position:relative;z-index:2;text-align:center;
-  padding:2rem;max-width:700px;margin-top:-4rem;
-  will-change:transform,opacity;
-  transition:none;
+  position:relative;z-index:2;text-align:center;padding:2rem;max-width:750px;
 }
-.hero-tag{
-  font-family:var(--font-nums);font-size:.8rem;letter-spacing:.25em;text-transform:uppercase;
-  color:var(--micro);display:block;margin-bottom:1rem;
+.hero-eyebrow{
+  font-family:var(--font-body);font-size:.85rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--micro);display:block;margin-bottom:1.5rem;
+  opacity:0;animation:fadeInUp .8s .3s forwards;
 }
 .hero-title{
-  font-family:var(--font-hero);font-size:clamp(3rem,7vw,6rem);font-weight:400;
-  color:var(--text);line-height:1.05;margin-bottom:.75rem;
-  font-style:italic;
+  font-family:var(--font-hero);font-size:clamp(3.5rem,8vw,6rem);font-weight:400;
+  color:var(--text-dark);line-height:1.05;margin-bottom:1rem;
+  font-style:italic;opacity:0;animation:fadeInUp .8s .5s forwards;
 }
 .hero-subtitle{
-  font-family:var(--font-display);font-size:clamp(1.25rem,2.5vw,1.75rem);
-  color:var(--text-muted);font-weight:400;margin-bottom:2rem;
+  font-family:var(--font-body);font-size:clamp(1rem,2vw,1.2rem);
+  color:var(--text-muted);font-weight:400;margin-bottom:.75rem;
+  letter-spacing:.08em;opacity:0;animation:fadeInUp .8s .7s forwards;
+}
+.hero-intro{
+  font-family:var(--font-display);font-size:clamp(1.1rem,2vw,1.35rem);
+  color:var(--text-muted);font-style:italic;max-width:480px;margin:0 auto 2.5rem;
+  line-height:1.5;opacity:0;animation:fadeInUp .8s 1.2s forwards;
 }
 .hero-cta-wrapper{
   display:inline-flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center;
+  opacity:0;animation:fadeInUp .8s 1.5s forwards;
 }
 .hero-cta{
   display:inline-flex;align-items:center;gap:.75rem;
   padding:.9rem 2.2rem;
-  background:var(--accent);color:var(--text);
+  background:var(--accent);color:var(--text-dark);
   font-family:var(--font-body);font-size:.9rem;font-weight:500;
-  border:none;cursor:none;text-decoration:none;
-  letter-spacing:.03em;
+  border:none;text-decoration:none;letter-spacing:.03em;
   transition:background .3s,transform .3s;
-  position:relative;
 }
 .hero-cta:hover{background:var(--accent-hover);transform:translateY(-2px)}
-.hero-cta::after{content:'';position:absolute;inset:-4px;border:1px solid var(--accent);opacity:.5;transition:opacity .3s}
-.hero-cta:hover::after{opacity:1}
 .hero-cta-secondary{
   display:inline-flex;align-items:center;gap:.75rem;
   padding:.9rem 2.2rem;
-  background:transparent;color:var(--text);
+  background:transparent;color:var(--text-dark);
   font-family:var(--font-body);font-size:.9rem;font-weight:500;
-  border:2px solid var(--accent);cursor:none;text-decoration:none;
-  letter-spacing:.03em;
-  transition:all .3s ease;
+  border:2px solid var(--text-dark);text-decoration:none;letter-spacing:.03em;
+  transition:all .3s;
 }
-.hero-cta-secondary:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.hero-cta-secondary:hover{background:var(--text-dark);color:var(--warm-light)}
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
-/* Scroll indicator */
 .scroll-indicator{
-  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:3;
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:3;
   display:flex;flex-direction:column;align-items:center;gap:8px;
   color:var(--text-muted);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
 }
-.scroll-arrow-svg{
-  width:28px;height:28px;stroke:var(--accent);stroke-width:2;
-  fill:none;animation:scroll-pulse 1.5s ease-in-out infinite;
-}
+.scroll-arrow-svg{width:28px;height:28px;stroke:var(--accent);stroke-width:2;fill:none;animation:scroll-pulse 1.5s ease-in-out infinite}
 @keyframes scroll-pulse{
-  0%{opacity:.6;transform:translateY(0)}
+  0%{opacity:.5;transform:translateY(0)}
   50%{opacity:1;transform:translateY(6px)}
-  100%{opacity:.6;transform:translateY(0)}
+  100%{opacity:.5;transform:translateY(0)}
 }
 
-/* ========== SECTION 2: PRODUCT SHOWCASE ========== */
-.product-grid{
-  display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;
-  max-width:var(--max-w);margin:0 auto;
+/* ========== SECTION 2: SCENA 1 — O PIĄTEJ RANO ========== */
+.scene-morning{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,5rem);
+  align-items:center;max-width:1400px;margin:0 auto;
   padding:0 clamp(1.5rem,5vw,4rem);
 }
-.product-grid.row-reverse{grid-template-columns:1fr 2fr}
+.scene-morning-illustration{position:relative}
+.scene-morning-illustration svg{width:100%;height:auto}
+.scene-morning-text h2{
+  font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;
+  margin-bottom:1.5rem;color:var(--text-light);
+}
+.scene-morning-text p{
+  font-family:var(--font-body);font-size:1.05rem;line-height:1.7;
+  color:rgba(245,235,224,.8);margin-bottom:2rem;max-width:38ch;
+}
+.scene-quote{
+  font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.5rem);
+  font-style:italic;color:var(--text-light);
+  border-left:4px solid var(--accent);padding-left:1.5rem;
+  margin-top:2rem;
+}
+
+/* ========== SECTION 3: SCENA 2 — ZIARNO I ZAKWAS ========== */
+.grain-header{text-align:center;margin-bottom:4rem}
+.grain-header h2{
+  font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;
+  color:var(--text-dark);margin-bottom:.5rem;
+}
+.grain-header p{
+  font-family:var(--font-body);font-size:1.05rem;color:var(--text-muted);
+}
+.grain-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
+  max-width:1100px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);
+}
+.grain-card{
+  background:rgba(255,255,255,.5);padding:2.5rem 2rem;text-align:center;
+  border:1px solid rgba(194,169,144,.2);position:relative;overflow:hidden;
+  transition:transform .4s,border-color .4s,box-shadow .4s;
+}
+.grain-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 12px 40px rgba(43,37,32,.08)}
+.grain-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:0;
+  background:linear-gradient(to top,rgba(177,197,164,.08),transparent);
+  transition:height .4s;
+}
+.grain-card:hover::after{height:100%}
+.grain-card-num{
+  font-family:var(--font-nums);font-size:4rem;color:rgba(194,169,144,.2);
+  line-height:1;margin-bottom:.5rem;
+}
+.grain-card-icon{margin-bottom:1.5rem}
+.grain-card-icon svg{width:48px;height:48px;stroke:var(--accent);fill:none;stroke-width:1.5}
+.grain-card h3{font-family:var(--font-display);font-size:1.5rem;color:var(--text-dark);margin-bottom:.75rem}
+.grain-card p{font-family:var(--font-body);font-size:.9rem;color:var(--text-muted);line-height:1.6;max-width:22ch;margin:0 auto}
+
+/* ========== SECTION 4: SCENA 3 — 4 PRODUKTY ========== */
+.products-header{text-align:center;margin-bottom:4rem}
+.products-header h2{
+  font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;
+  color:var(--text-light);margin-bottom:.5rem;
+}
+.products-header p{
+  font-family:var(--font-body);font-size:1.05rem;color:rgba(245,235,224,.7);
+}
+.products-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;
+  max-width:1300px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);
+}
 .product-card{
-  position:relative;overflow:hidden;cursor:none;
-  min-height:380px;background:var(--overlay);
-  transition:transform .5s cubic-bezier(.22,1,.36,1);
-  isolation:isolate;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  padding:2.5rem 1.5rem;text-align:center;position:relative;overflow:hidden;
+  transition:transform .4s,border-color .4s,box-shadow .4s;
+  cursor:none;
 }
-.product-card:hover{transform:scale(1.015)}
-.product-card-img{
-  width:100%;height:100%;object-fit:cover;position:absolute;inset:0;
-  filter:grayscale(12%) contrast(102%) brightness(95%);
-  transition:transform .7s cubic-bezier(.22,1,.36,1),filter .5s;
+.product-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 16px 48px rgba(0,0,0,.25)}
+.product-card-num-bg{
+  font-family:var(--font-nums);font-size:6rem;
+  color:rgba(255,255,255,.04);position:absolute;top:-1rem;right:-.5rem;
+  line-height:1;pointer-events:none;
 }
-.product-card:hover .product-card-img{transform:scale(1.06);filter:grayscale(0%) contrast(105%) brightness(100%)}
-.product-card-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(43,37,32,.55) 0%,rgba(43,37,32,.08) 55%,transparent 100%);
-  z-index:1;
-}
-.product-card-content{
-  position:absolute;bottom:0;left:0;right:0;padding:2rem;z-index:2;
-}
-.product-card-num{
-  font-family:var(--font-nums);font-size:clamp(4rem,7vw,7rem);
-  color:rgba(249,249,249,.15);line-height:.8;
-  position:absolute;top:1.5rem;right:1.5rem;z-index:1;
-  transition:color .5s;
-}
-.product-card:hover .product-card-num{color:rgba(249,249,249,.35)}
-.product-card-label{
-  font-family:var(--font-display);font-size:clamp(1.5rem,2.5vw,2rem);
-  color:var(--cream);font-weight:500;letter-spacing:.02em;
-  position:relative;display:inline-block;
-}
-.product-card-label::after{
-  content:'';position:absolute;bottom:-6px;left:0;width:0;height:2px;
-  background:var(--accent);transition:width .4s cubic-bezier(.22,1,.36,1);
-}
-.product-card:hover .product-card-label::after{width:100%}
-.product-card-desc{
-  font-family:var(--font-body);font-size:.85rem;color:rgba(249,249,249,.75);
-  margin-top:.5rem;max-width:280px;
-}
+.product-card-icon{margin-bottom:1.25rem;position:relative;z-index:1}
+.product-card-icon svg{width:44px;height:44px;stroke:var(--accent);fill:none;stroke-width:1.5}
+.product-card h3{font-family:var(--font-display);font-size:1.35rem;color:var(--text-light);margin-bottom:.5rem;position:relative;z-index:1}
+.product-card p{font-family:var(--font-body);font-size:.85rem;color:rgba(245,235,224,.6);line-height:1.5;max-width:20ch;margin:0 auto;position:relative;z-index:1}
 
-/* ========== SECTION 3: PHILOSOPHY ========== */
-.philosophy{
-  position:relative;min-height:80vh;display:flex;align-items:center;
-  overflow:hidden;
-}
-.philosophy-bg{
-  position:absolute;inset:0;
-  background-image:url('https://images.unsplash.com/photo-1556912173-3c2fc4d9c5e5?auto=format&fit=crop&w=1600&q=80');
-  background-size:cover;background-position:center;
-  filter:grayscale(25%) brightness(45%) sepia(15%);
-}
-.philosophy-content{
-  position:relative;z-index:2;max-width:800px;
-  margin:0 auto;padding:clamp(2rem,8vw,6rem);text-align:center;
-}
-.philosophy-quote{
-  font-family:var(--font-display);font-size:clamp(1.75rem,3.5vw,2.75rem);
-  font-weight:400;font-style:italic;line-height:1.35;
-  color:var(--cream);max-width:30ch;margin:0 auto 2rem;
-}
-.philosophy-quote::before{content:'\201C';font-family:var(--font-nums);font-size:5rem;display:block;color:var(--accent);line-height:.5;margin-bottom:2rem}
-.philosophy-attribution{
-  font-family:var(--font-body);font-size:.9rem;color:rgba(249,249,249,.6);
-  letter-spacing:.08em;text-transform:uppercase;
-}
-
-/* ========== SECTION 4: PROCESS ========== */
-.process-steps{
-  display:flex;justify-content:center;align-items:flex-start;
-  gap:0;max-width:var(--max-w);margin:0 auto;
+/* ========== SECTION 5: SCENA 4 — PROCES ========== */
+.process-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,5rem);
+  align-items:center;max-width:1400px;margin:0 auto;
   padding:0 clamp(1.5rem,5vw,4rem);
-  position:relative;
 }
-.process-connector{
-  position:absolute;top:3.5rem;left:clamp(1.5rem,5vw,4rem);right:clamp(1.5rem,5vw,4rem);
-  height:2px;z-index:0;overflow:visible;
+.process-diagram svg{width:100%;height:auto}
+.process-list{list-style:none;display:flex;flex-direction:column;gap:2rem}
+.process-list-item{
+  display:flex;gap:1.5rem;align-items:flex-start;
 }
-.process-connector path{
-  fill:none;stroke:#C2A990;stroke-width:1.5;
-  stroke-dasharray:6 8;stroke-linecap:round;
+.process-list-num{
+  font-family:var(--font-nums);font-size:2.5rem;color:var(--accent);
+  line-height:1;flex-shrink:0;width:50px;
 }
-.process-step{
-  flex:1;text-align:center;position:relative;z-index:1;
-  padding:1rem;
+.process-list-text h4{
+  font-family:var(--font-display);font-size:1.35rem;color:var(--text-dark);
+  margin-bottom:.35rem;
 }
-.process-step-num{
-  font-family:var(--font-nums);font-size:3rem;color:var(--overlay);
-  line-height:1;margin-bottom:.75rem;transition:color .4s;
-}
-.process-step:hover .process-step-num{color:var(--micro)}
-.process-step-title{
-  font-family:var(--font-display);font-size:1.35rem;font-weight:600;
-  color:var(--text);margin-bottom:.5rem;
-}
-.process-step-desc{
-  font-family:var(--font-body);font-size:.85rem;color:var(--text-muted);
-  max-width:20ch;margin:0 auto;line-height:1.5;
-}
-.process-step-icon{
-  width:48px;height:48px;margin:0 auto 1rem;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:50%;background:var(--bg);
-  border:1.5px solid var(--overlay);transition:border-color .4s,background .4s;
-}
-.process-step:hover .process-step-icon{background:var(--accent);border-color:var(--accent)}
-.process-step-icon svg{width:22px;height:22px;stroke:var(--text-muted);fill:none;stroke-width:1.5;transition:stroke .4s}
-.process-step:hover .process-step-icon svg{stroke:var(--text)}
-
-/* ========== SECTION 5: LOCATIONS ========== */
-.locations-header{text-align:center;margin-bottom:4rem}
-.locations-title{
-  font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);
-  font-weight:500;color:var(--text);margin-bottom:.5rem;
-}
-.locations-count{
-  font-family:var(--font-nums);font-size:1rem;color:var(--micro);
-  letter-spacing:.08em;
-}
-.locations-list{
-  max-width:900px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);
-  list-style:none;display:flex;flex-direction:column;gap:0;
-}
-.location-item{
-  display:grid;grid-template-columns:100px 1fr 1fr;
-  align-items:center;gap:2rem;
-  padding:1.5rem 0;border-bottom:1px solid rgba(194,169,144,.3);
-  cursor:default;transition:background .3s,padding .3s;
-  position:relative;
-}
-.location-item::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:0;
-  background:linear-gradient(to right,rgba(177,197,164,.15),transparent);
-  transition:width .4s cubic-bezier(.22,1,.36,1);
-}
-.location-item:hover::before{width:100%}
-.location-item:hover{padding-left:.5rem}
-.location-num{
-  font-family:var(--font-nums);font-size:3rem;color:rgba(194,169,144,.35);
-  line-height:1;transition:color .4s;
-}
-.location-item:hover .location-num{color:rgba(194,169,144,.7)}
-.location-city{
-  font-family:var(--font-display);font-size:1.5rem;font-weight:500;color:var(--text);
-}
-.location-address{
-  font-family:var(--font-body);font-size:.85rem;color:var(--text-muted);
-}
-.location-hours{
-  font-family:var(--font-body);font-size:.8rem;color:var(--text-muted);
-  font-style:italic;
+.process-list-text p{
+  font-family:var(--font-body);font-size:.9rem;color:var(--text-muted);
+  line-height:1.5;max-width:32ch;
 }
 
-/* ========== SECTION 6: SIGNATURE ========== */
+/* ========== SECTION 6: SCENA 5 — MAPA ========== */
+.map-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,5rem);
+  align-items:start;max-width:1400px;margin:0 auto;
+  padding:0 clamp(1.5rem,5vw,4rem);
+}
+.map-header{text-align:center;margin-bottom:4rem}
+.map-header h2{
+  font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;
+  color:var(--text-light);margin-bottom:.5rem;
+}
+.map-header p{
+  font-family:var(--font-body);font-size:1rem;color:rgba(245,235,224,.7);
+}
+.map-svg-container{position:relative}
+.map-svg-container svg{width:100%;height:auto}
+.map-dot{animation:map-pulse 2s ease-in-out infinite}
+@keyframes map-pulse{
+  0%,100%{r:5;opacity:.7}
+  50%{r:7;opacity:1}
+}
+.city-list{list-style:none;display:flex;flex-direction:column;gap:1.25rem;max-height:70vh;overflow-y:auto}
+.city-item{
+  border-left:3px solid transparent;padding:1rem 1.25rem;
+  background:rgba(255,255,255,.03);transition:border-color .3s,background .3s;
+}
+.city-item:hover{border-left-color:var(--accent);background:rgba(255,255,255,.06)}
+.city-item h4{font-family:var(--font-display);font-size:1.2rem;color:var(--text-light);margin-bottom:.25rem}
+.city-item .addr{font-family:var(--font-body);font-size:.8rem;color:rgba(245,235,224,.55)}
+.city-item .hours{font-family:var(--font-body);font-size:.75rem;color:rgba(245,235,224,.4);font-style:italic;margin-top:.15rem}
+
+/* ========== SECTION 7: SCENA 6 — PODPIS ========== */
 .signature-section{
-  text-align:center;padding:clamp(4rem,12vh,8rem) 0;
-  background:var(--overlay);position:relative;overflow:hidden;
+  text-align:center;padding:clamp(5rem,14vh,10rem) 0;
+  position:relative;overflow:hidden;
 }
 .signature-section::before{
   content:'';position:absolute;inset:0;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity:.04;pointer-events:none;
+  opacity:.03;pointer-events:none;
 }
-.signature-label{
-  font-family:var(--font-nums);font-size:.8rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--text-muted);
-  display:block;margin-bottom:2rem;
+.signature-section h2{
+  font-family:var(--font-display);font-size:clamp(1.75rem,3vw,2.5rem);
+  font-weight:500;color:var(--text-dark);margin-bottom:2.5rem;
 }
 .signature-svg{
   max-width:520px;width:80%;height:auto;margin:0 auto;display:block;
@@ -417,9 +380,9 @@ a,button,input,select,textarea,.clickable{cursor:none}
   stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:2500;stroke-dashoffset:2500;
 }
-.signature-svg.signed .sign-path{stroke-dashoffset:0;transition:stroke-dashoffset 3s ease-out}
+.signature-svg.signed .sign-path{stroke-dashoffset:0;transition:stroke-dashoffset 3.5s ease-out}
 .signature-name{
-  font-family:var(--font-display);font-size:1.35rem;color:var(--text);
+  font-family:var(--font-display);font-size:1.35rem;color:var(--text-dark);
   margin-top:1.5rem;font-style:italic;
 }
 .signature-role{
@@ -427,114 +390,96 @@ a,button,input,select,textarea,.clickable{cursor:none}
   letter-spacing:.06em;text-transform:uppercase;margin-top:.25rem;
 }
 
-/* ========== SECTION 7: FOOTER ========== */
+/* ========== FOOTER ========== */
 .site-footer{
-  background:var(--overlay);color:var(--cream);padding:4rem clamp(1.5rem,5vw,4rem) 2rem;
+  background:var(--warm-dark);color:var(--text-light);padding:4rem clamp(1.5rem,5vw,4rem) 2rem;
 }
 .footer-grid{
   display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;
-  max-width:var(--max-w);margin:0 auto 3rem;
+  max-width:1400px;margin:0 auto 3rem;
 }
-.footer-col h4{
-  font-family:var(--font-display);font-size:1.1rem;font-weight:600;
-  margin-bottom:1.25rem;letter-spacing:.02em;
-}
+.footer-col h4{font-family:var(--font-display);font-size:1.1rem;font-weight:600;margin-bottom:1.25rem;letter-spacing:.02em}
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
-.footer-col a{
-  color:rgba(249,249,249,.7);text-decoration:none;font-size:.85rem;
-  transition:color .3s;position:relative;
-}
-.footer-col a:hover{color:var(--cream)}
-.footer-col a::after{
-  content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;
-  background:var(--cream);transition:width .4s cubic-bezier(.22,1,.36,1);
-}
+.footer-col a{color:rgba(245,235,224,.6);text-decoration:none;font-size:.85rem;transition:color .3s;position:relative}
+.footer-col a:hover{color:var(--accent)}
+.footer-col a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--accent);transition:width .4s cubic-bezier(.22,1,.36,1)}
 .footer-col a:hover::after{width:100%}
 .footer-social-icons{display:flex;gap:1rem;flex-wrap:wrap}
-.footer-social-icons a{
-  display:flex;align-items:center;justify-content:center;
-  width:40px;height:40px;border:1px solid rgba(249,249,249,.2);
-  border-radius:50%;transition:border-color .3s,background .3s;
-}
-.footer-social-icons a:hover{background:rgba(249,249,249,.08);border-color:rgba(249,249,249,.5)}
+.footer-social-icons a{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid rgba(245,235,224,.15);border-radius:50%;transition:border-color .3s,background .3s}
+.footer-social-icons a:hover{background:rgba(245,235,224,.06);border-color:rgba(245,235,224,.4)}
 .footer-social-icons a:hover::after{display:none}
-.footer-social-icons svg{width:16px;height:16px;stroke:var(--cream);fill:none;stroke-width:1.5}
+.footer-social-icons svg{width:16px;height:16px;stroke:var(--text-light);fill:none;stroke-width:1.5}
 .footer-bottom{
-  max-width:var(--max-w);margin:0 auto;padding-top:2rem;
-  border-top:1px solid rgba(249,249,249,.12);
+  max-width:1400px;margin:0 auto;padding-top:2rem;
+  border-top:1px solid rgba(245,235,224,.08);
   display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:.5rem;font-size:.8rem;color:rgba(249,249,249,.4);
+  flex-wrap:wrap;gap:.5rem;font-size:.8rem;color:rgba(245,235,224,.3);
 }
 
 /* ========== RESPONSIVE ========== */
 @media(max-width:768px){
   body{cursor:auto}
-  a,button,input,select,textarea,.clickable{cursor:pointer}
+  a,button,.product-card,.clickable{cursor:pointer}
   #custom-cursor,#cursor-trail{display:none}
-
   .hamburger{display:flex}
   .mobile-menu{display:flex}
   .nav-links{display:none}
-  .hero-image-container{width:95vw;height:50vh}
-  .hero-content{margin-top:-2rem}
-  .product-grid,.product-grid.row-reverse{grid-template-columns:1fr;gap:1rem}
-  .product-card{min-height:280px}
-  .process-steps{flex-direction:column;gap:2rem}
-  .process-connector{display:none}
-  .process-step{flex-direction:row;text-align:left;display:flex;gap:1.5rem;align-items:center}
-  .process-step-icon{flex-shrink:0;margin:0}
-  .location-item{grid-template-columns:60px 1fr;gap:.75rem 1rem}
-  .location-hours{grid-column:2}
-  .footer-grid{grid-template-columns:1fr 1fr;gap:2rem 1.5rem}
-  .philosophy-quote{font-size:1.5rem}
-  .hero-title{font-size:2.5rem}
-  .product-card-label{font-size:1.5rem}
-  .process-step-num{font-size:2rem}
+  .hero-wheat{right:1rem;width:100px;opacity:.5}
+  .scene-morning{grid-template-columns:1fr}
+  .scene-morning-illustration{max-width:300px;margin:0 auto}
+  .grain-cards{grid-template-columns:1fr;gap:1.25rem}
+  .products-grid{grid-template-columns:1fr 1fr;gap:1rem}
+  .process-layout{grid-template-columns:1fr}
+  .process-diagram{max-width:400px;margin:0 auto;order:2}
+  .map-layout{grid-template-columns:1fr}
+  .map-svg-container{max-width:400px;margin:0 auto}
+  .city-list{max-height:none}
+  .hero-title{font-size:2.8rem}
+  .signature-section h2{font-size:1.5rem}
 }
 
 @media(max-width:480px){
-  .product-card-num{font-size:3.5rem}
-  .location-item{grid-template-columns:1fr;text-align:center}
-  .location-num{font-size:2rem}
+  .products-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .hero-cta-wrapper{flex-direction:column;gap:.75rem}
   .hero-cta,.hero-cta-secondary{width:100%;justify-content:center}
+  .grain-card{padding:1.5rem}
+  .product-card{padding:1.5rem 1rem}
 }
 </style>
 </head>
 <body>
 
-<!-- ========== SVG DEFINITIONS ========== -->
-<svg class="svg-defs" xmlns="http://www.w3.org/2000/svg">
+<!-- ========== SVG DEFS ========== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
   <defs>
     <symbol id="icon-fb" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
-    <symbol id="icon-ig" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2"/></symbol>
+    <symbol id="icon-ig" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2"/></symbol>
     <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
     <symbol id="icon-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
     <symbol id="icon-loc" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-    <symbol id="icon-grain" viewBox="0 0 24 24"><circle cx="9" cy="12" r="3"/><circle cx="17" cy="8" r="2"/><circle cx="15" cy="17" r="2"/><circle cx="7" cy="5" r="1.5"/><circle cx="19" cy="13" r="1.5"/></symbol>
-    <symbol id="icon-sourdough" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="4" rx="1"/><path d="M6 6h12v12a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V6z"/><line x1="9" y1="10" x2="9" y2="16"/><line x1="12" y1="10" x2="12" y2="16"/><line x1="15" y1="10" x2="15" y2="16"/></symbol>
-    <symbol id="icon-oven" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="6" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="18" cy="15" r="1.5"/></symbol>
-    <symbol id="icon-shop" viewBox="0 0 24 24"><path d="M3 9l1.5-4h15L21 9"/><path d="M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/><line x1="9" y1="21" x2="9" y2="13"/><line x1="15" y1="21" x2="15" y2="13"/><line x1="3" y1="9" x2="21" y2="9"/></symbol>
     <symbol id="icon-yt" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29.94 29.94 0 0 0 1 11.75a29.94 29.94 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29.94 29.94 0 0 0 .46-5.25 29.94 29.94 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></symbol>
+    <radialGradient id="wheat-glow-grad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#D8613C" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#D8613C" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 </svg>
 
-<!-- ========== GRAIN OVERLAY ========== -->
+<!-- ========== GRAIN + CURSOR OVERLAYS ========== -->
 <div id="grain-overlay" aria-hidden="true"></div>
-
-<!-- ========== CUSTOM CURSOR ========== -->
 <div id="custom-cursor" aria-hidden="true"></div>
 <div id="cursor-trail" aria-hidden="true"></div>
 
-<!-- ========== STICKY NAVBAR ========== -->
+<!-- ========== NAVBAR ========== -->
 <header class="site-header" id="header" role="banner">
   <a href="#hero" class="logo-text" aria-label="Piekarnia Bindrich — strona główna">Bindrich</a>
   <nav aria-label="Menu nawigacyjne">
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#produkty" data-section="produkty">Produkty</a></li>
-      <li><a href="#filozofia" data-section="filozofia">Nasza firma</a></li>
+    <ul class="nav-links">
+      <li><a href="#scena1" data-section="scena1">O nas</a></li>
+      <li><a href="#scena3" data-section="scena3">Produkty</a></li>
+      <li><a href="#scena5" data-section="scena5">Piekarnie</a></li>
       <li><a href="#kontakt" data-section="kontakt">Kontakt</a></li>
     </ul>
   </nav>
@@ -543,32 +488,53 @@ a,button,input,select,textarea,.clickable{cursor:none}
   </button>
 </header>
 
-<!-- ========== MOBILE MENU ========== -->
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-  <a href="#produkty" data-mobile-link>Produkty</a>
-  <a href="#filozofia" data-mobile-link>Nasza firma</a>
+  <a href="#scena1" data-mobile-link>O nas</a>
+  <a href="#scena3" data-mobile-link>Produkty</a>
+  <a href="#scena5" data-mobile-link>Piekarnie</a>
   <a href="#kontakt" data-mobile-link>Kontakt</a>
 </div>
 
 <!-- ========== SECTION 1: HERO ========== -->
 <section class="hero" id="hero">
-  <div class="hero-image-container" id="hero-image-container">
-    <img
-      class="hero-image"
-      src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=85"
-      alt="Świeżo upieczony chleb na naturalnym zakwasie"
-      loading="eager"
-    />
+  <!-- Wheat SVG illustration -->
+  <div class="hero-wheat" aria-hidden="true">
+    <svg viewBox="0 0 160 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="wheat-shadow"><feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#D8613C" flood-opacity="0.15"/></filter>
+      </defs>
+      <circle cx="80" cy="170" r="120" fill="url(#wheat-glow-grad)" class="wheat-glow"/>
+      <!-- Stem -->
+      <line x1="80" y1="60" x2="78" y2="300" stroke="#C2A990" stroke-width="3" stroke-linecap="round"/>
+      <line x1="70" y1="230" x2="76" y2="290" stroke="#C2A990" stroke-width="2" stroke-linecap="round"/>
+      <!-- Wheat head -->
+      <ellipse cx="80" cy="75" rx="12" ry="24" fill="#CFCABE" stroke="#C2A990" stroke-width="1.5" filter="url(#wheat-shadow)"/>
+      <!-- Kernels -->
+      <ellipse cx="75" cy="72" rx="4" ry="8" fill="#E8D5B0" transform="rotate(-15,75,72)"/>
+      <ellipse cx="85" cy="78" rx="4" ry="8" fill="#E8D5B0" transform="rotate(10,85,78)"/>
+      <ellipse cx="73" cy="85" rx="3.5" ry="7" fill="#E8D5B0" transform="rotate(-10,73,85)"/>
+      <ellipse cx="87" cy="90" rx="3.5" ry="7" fill="#E8D5B0" transform="rotate(12,87,90)"/>
+      <!-- Awns -->
+      <line x1="77" y1="52" x2="70" y2="28" stroke="#C2A990" stroke-width="1" stroke-linecap="round"/>
+      <line x1="80" y1="50" x2="80" y2="22" stroke="#C2A990" stroke-width="1" stroke-linecap="round"/>
+      <line x1="83" y1="52" x2="90" y2="28" stroke="#C2A990" stroke-width="1" stroke-linecap="round"/>
+      <!-- Leaves -->
+      <path d="M78,200 C55,185 40,195 35,210" fill="none" stroke="#B1C5A4" stroke-width="2" stroke-linecap="round"/>
+      <path d="M76,250 C95,235 110,240 120,255" fill="none" stroke="#B1C5A4" stroke-width="2" stroke-linecap="round"/>
+    </svg>
   </div>
-  <div class="hero-content" id="hero-content">
-    <span class="hero-tag">Piekary Śląskie · od 1990</span>
+
+  <div class="hero-content">
+    <span class="hero-eyebrow">Piekary Śląskie · od 1990</span>
     <h1 class="hero-title">Naturalnie Pyszne</h1>
     <p class="hero-subtitle">Piekarnia Bindrich</p>
+    <p class="hero-intro">Każdy dzień zaczyna się o 5:00 rano. Z mąki. Z wody. Z cierpliwości.</p>
     <div class="hero-cta-wrapper">
-      <a href="#produkty" class="hero-cta">Odkryj ofertę →</a>
-      <a href="#lokalizacje" class="hero-cta-secondary">Znajdź piekarnię →</a>
+      <a href="#scena3" class="hero-cta">Odkryj ofertę →</a>
+      <a href="#scena5" class="hero-cta-secondary">Znajdź piekarnię →</a>
     </div>
   </div>
+
   <div class="scroll-indicator" aria-hidden="true">
     <span>Przewiń</span>
     <svg class="scroll-arrow-svg" viewBox="0 0 24 30" width="24" height="30">
@@ -578,182 +544,245 @@ a,button,input,select,textarea,.clickable{cursor:none}
   </div>
 </section>
 
-<!-- ========== SECTION 2: PRODUCT SHOWCASE ========== -->
-<section class="section" id="produkty">
-  <div class="container" style="margin-bottom:3rem">
-    <span class="section-label reveal">01 / Nasze specjały</span>
-    <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;color:var(--text)" class="reveal">Wypiekamy z pasją</h2>
-  </div>
-
-  <div class="product-grid reveal">
-    <article class="product-card">
-      <img class="product-card-img" src="https://images.unsplash.com/photo-1549931319-a545799f18c3?auto=format&fit=crop&w=800&q=80" alt="Wypieki — chleby i bułki" loading="lazy">
-      <div class="product-card-overlay"></div>
-      <span class="product-card-num">01</span>
-      <div class="product-card-content">
-        <h3 class="product-card-label">Wypieki</h3>
-        <p class="product-card-desc">Chleby na zakwasie, bułki pszenne i żytnie — tradycyjne receptury, naturalne składniki.</p>
-      </div>
-    </article>
-    <article class="product-card">
-      <img class="product-card-img" src="https://images.unsplash.com/photo-1478747935146-23ef1e8c0eb9?auto=format&fit=crop&w=600&q=80" alt="Żur — naturalny, butelkowany" loading="lazy">
-      <div class="product-card-overlay"></div>
-      <span class="product-card-num">02</span>
-      <div class="product-card-content">
-        <h3 class="product-card-label">Żur</h3>
-        <p class="product-card-desc">Naturalny żur butelkowany — prawdziwy śląski smak, bez konserwantów.</p>
-      </div>
-    </article>
-  </div>
-
-  <div class="product-grid row-reverse reveal" style="margin-top:1.25rem">
-    <article class="product-card">
-      <img class="product-card-img" src="https://images.unsplash.com/photo-1488477185556-3e7a2d65dc32?auto=format&fit=crop&w=600&q=80" alt="Ciasta — domowe wypieki" loading="lazy">
-      <div class="product-card-overlay"></div>
-      <span class="product-card-num">03</span>
-      <div class="product-card-content">
-        <h3 class="product-card-label">Ciasta</h3>
-        <p class="product-card-desc">Serniki, drożdżówki, pączki — cukiernia z tradycją, bez sztucznych polepszaczy.</p>
-      </div>
-    </article>
-    <article class="product-card">
-      <img class="product-card-img" src="https://images.unsplash.com/photo-1501443763094-9944d0172269?auto=format&fit=crop&w=800&q=80" alt="Lody rzemieślnicze" loading="lazy">
-      <div class="product-card-overlay"></div>
-      <span class="product-card-num">04</span>
-      <div class="product-card-content">
-        <h3 class="product-card-label">Lody Rzemieślnicze</h3>
-        <p class="product-card-desc">Ręcznie robione lody z naturalnych składników — smak lata na Śląsku.</p>
-      </div>
-    </article>
-  </div>
-</section>
-
-<!-- ========== SECTION 3: PHILOSOPHY ========== -->
-<section class="philosophy" id="filozofia">
-  <div class="philosophy-bg" aria-hidden="true"></div>
-  <div class="philosophy-content reveal">
-    <blockquote class="philosophy-quote">
-      Pieczywo to dla nas nie tylko biznes — to symbol kultury i tradycji, której oddajemy najwyższy szacunek.
-    </blockquote>
-    <p class="philosophy-attribution">Rodzina Bindrich · Piekary Śląskie</p>
-  </div>
-</section>
-
-<!-- ========== SECTION 4: PROCESS ========== -->
-<section class="section" id="proces">
-  <div class="container" style="margin-bottom:4rem;text-align:center">
-    <span class="section-label reveal">02 / Od ziarna do bochenka</span>
-    <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;color:var(--text)" class="reveal">Rzemiosło w czterech aktach</h2>
-  </div>
-
-  <div class="process-steps reveal">
-    <svg class="process-connector" viewBox="0 0 1200 40" preserveAspectRatio="none" style="width:calc(100% - clamp(3rem,10vw,8rem));left:clamp(1.5rem,5vw,4rem)">
-      <path d="M0,20 C150,10 250,30 400,20 C550,10 650,30 800,20 C950,10 1050,30 1200,20"
-            stroke="#C2A990" stroke-width="1.5" fill="none"
-            stroke-dasharray="6 8" stroke-linecap="round"/>
-    </svg>
-
-    <div class="process-step">
-      <div class="process-step-icon">
-        <svg viewBox="0 0 24 24"><use href="#icon-grain"/></svg>
-      </div>
-      <div class="process-step-num">I</div>
-      <h3 class="process-step-title">Ziarno</h3>
-      <p class="process-step-desc">Wyselekcjonowane mąki od sprawdzonych młynów — podstawa każdego bochenka.</p>
+<!-- ========== SECTION 2: SCENA 1 — O PIĄTEJ RANO ========== -->
+<section class="section section-dark" id="scena1">
+  <div class="scene-morning">
+    <div class="scene-morning-illustration reveal-left">
+      <svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- Dark sky background -->
+        <rect x="0" y="0" width="400" height="260" fill="#2A1F18" rx="8"/>
+        <!-- Stars -->
+        <circle cx="60" cy="40" r="1.5" fill="#F5EBE0" opacity=".6"/>
+        <circle cx="150" cy="25" r="1" fill="#F5EBE0" opacity=".4"/>
+        <circle cx="280" cy="50" r="1.5" fill="#F5EBE0" opacity=".5"/>
+        <circle cx="340" cy="30" r="1" fill="#F5EBE0" opacity=".3"/>
+        <circle cx="200" cy="60" r="1" fill="#F5EBE0" opacity=".4"/>
+        <!-- Bakery building -->
+        <rect x="60" y="110" width="280" height="150" fill="#3B2920" rx="4"/>
+        <rect x="60" y="110" width="280" height="12" fill="#4A382E"/>
+        <!-- Roof -->
+        <polygon points="40,110 200,40 360,110" fill="#4A382E"/>
+        <!-- Warm glow windows -->
+        <rect x="100" y="140" width="40" height="55" fill="#E8A847" opacity=".9" rx="3"/>
+        <rect x="100" y="140" width="40" height="55" fill="#F5EBE0" opacity=".3" rx="3"/>
+        <rect x="180" y="140" width="40" height="55" fill="#E8A847" opacity=".9" rx="3"/>
+        <rect x="180" y="140" width="40" height="55" fill="#F5EBE0" opacity=".3" rx="3"/>
+        <rect x="260" y="140" width="40" height="55" fill="#E8A847" opacity=".9" rx="3"/>
+        <rect x="260" y="140" width="40" height="55" fill="#F5EBE0" opacity=".3" rx="3"/>
+        <!-- Door -->
+        <rect x="175" y="190" width="50" height="70" fill="#2A1F18" rx="3"/>
+        <rect x="175" y="190" width="50" height="70" fill="#E8A847" opacity=".15" rx="3"/>
+        <!-- Window glow on ground -->
+        <ellipse cx="120" cy="275" rx="45" ry="12" fill="#E8A847" opacity=".12"/>
+        <ellipse cx="200" cy="275" rx="45" ry="12" fill="#E8A847" opacity=".12"/>
+        <ellipse cx="280" cy="275" rx="45" ry="12" fill="#E8A847" opacity=".12"/>
+        <!-- Baker silhouette in window -->
+        <circle cx="205" cy="155" r="10" fill="#2A1F18" opacity=".5"/>
+        <rect x="195" y="165" width="20" height="20" fill="#2A1F18" opacity=".5" rx="4"/>
+        <!-- Bread shapes in window -->
+        <ellipse cx="270" cy="165" rx="12" ry="8" fill="#C2A990" opacity=".5"/>
+        <ellipse cx="285" cy="168" rx="10" ry="7" fill="#C2A990" opacity=".4"/>
+        <!-- Steam/smoke from roof -->
+        <path d="M180,40 C175,28 185,18 180,8" fill="none" stroke="#F5EBE0" stroke-width="1.5" opacity=".25" stroke-linecap="round"/>
+        <path d="M200,38 C195,25 205,15 200,5" fill="none" stroke="#F5EBE0" stroke-width="1.5" opacity=".2" stroke-linecap="round"/>
+        <path d="M220,40 C215,28 225,18 220,8" fill="none" stroke="#F5EBE0" stroke-width="1.5" opacity=".25" stroke-linecap="round"/>
+      </svg>
     </div>
-    <div class="process-step">
-      <div class="process-step-icon">
-        <svg viewBox="0 0 24 24"><use href="#icon-sourdough"/></svg>
-      </div>
-      <div class="process-step-num">II</div>
-      <h3 class="process-step-title">Zakwas</h3>
-      <p class="process-step-desc">Naturalny zakwas prowadzony od pokoleń — bez drożdży przemysłowych, bez pośpiechu.</p>
-    </div>
-    <div class="process-step">
-      <div class="process-step-icon">
-        <svg viewBox="0 0 24 24"><use href="#icon-oven"/></svg>
-      </div>
-      <div class="process-step-num">III</div>
-      <h3 class="process-step-title">Piec</h3>
-      <p class="process-step-desc">Tradycyjne piece z kamieniem ceramicznym — równomierne ciepło i chrupiąca skórka.</p>
-    </div>
-    <div class="process-step">
-      <div class="process-step-icon">
-        <svg viewBox="0 0 24 24"><use href="#icon-shop"/></svg>
-      </div>
-      <div class="process-step-num">IV</div>
-      <h3 class="process-step-title">Sklep</h3>
-      <p class="process-step-desc">Codziennie świeże na 41 punktach — od Piekar po Katowice, od 5:00 rano.</p>
+    <div class="scene-morning-text reveal-right">
+      <h2>Zanim słońce wzejdzie...</h2>
+      <p>Każdego dnia, o piątej rano, nasi piekarze wchodzą do piekarni. Cicho. Precyzyjnie. Z szacunkiem do tradycji, która trwa od 1990 roku. Gdy miasto jeszcze śpi, u nas już pachnie świeżym chlebem.</p>
+      <div class="scene-quote">„To nie jest produkcja. To jest rzemiosło.”</div>
     </div>
   </div>
 </section>
 
-<!-- ========== SECTION 5: LOCATIONS ========== -->
-<section class="section" id="lokalizacje">
-  <div class="locations-header reveal">
-    <span class="section-label">03 / Gdzie jesteśmy</span>
-    <h2 class="locations-title">Znajdziesz nas na całym Śląsku</h2>
-    <p class="locations-count">41 punktów sprzedaży</p>
+<!-- ========== SECTION 3: SCENA 2 — ZIARNO I ZAKWAS ========== -->
+<section class="section section-light" id="scena2">
+  <div class="grain-header reveal">
+    <h2>Od ziarna do zakwasu</h2>
+    <p>Trzy etapy. Zero kompromisów.</p>
   </div>
-
-  <ul class="locations-list">
-    <li class="location-item reveal">
-      <span class="location-num">01</span>
-      <span class="location-city">Piekary Śląskie</span>
-      <span class="location-address">ul. Węglowa 3, 41-943</span>
-      <span class="location-hours">Pn–Pt 5:00–21:00, So 6:00–21:00, Nd 9:00–21:00</span>
-    </li>
-    <li class="location-item reveal">
-      <span class="location-num">02</span>
-      <span class="location-city">Bytom</span>
-      <span class="location-address">ul. Worpie 1a, 41-906</span>
-      <span class="location-hours">Pn–Pt 5:00–20:00, So 6:00–18:00, Nd 8:00–18:00</span>
-    </li>
-    <li class="location-item reveal">
-      <span class="location-num">03</span>
-      <span class="location-city">Chorzów</span>
-      <span class="location-address">ul. Boczna 12, 41-516</span>
-      <span class="location-hours">Pn–So 6:00–20:00, Nd 8:00–18:00</span>
-    </li>
-    <li class="location-item reveal">
-      <span class="location-num">04</span>
-      <span class="location-city">Katowice</span>
-      <span class="location-address">ul. Witosa 5, 40-832</span>
-      <span class="location-hours">Pn–Pt 6:00–21:00, So 6:00–21:00, Nd 8:00–20:00</span>
-    </li>
-    <li class="location-item reveal">
-      <span class="location-num">05</span>
-      <span class="location-city">Zabrze</span>
-      <span class="location-address">ul. 3 Maja 28, 41-800</span>
-      <span class="location-hours">Pn–Pt 6:00–20:00, So 6:00–18:00, Nd 8:00–18:00</span>
-    </li>
-    <li class="location-item reveal">
-      <span class="location-num">06</span>
-      <span class="location-city">Ruda Śląska</span>
-      <span class="location-address">ul. Solidarności 22, 41-706</span>
-      <span class="location-hours">Pn–So 5:00–20:00, Nd 8:00–18:00</span>
-    </li>
-    <li class="location-item reveal">
-      <span class="location-num">07</span>
-      <span class="location-city">Mysłowice</span>
-      <span class="location-address">ul. Wysockiego 2, 41-400</span>
-      <span class="location-hours">—</span>
-    </li>
-    <li class="location-item reveal">
-      <span class="location-num">08</span>
-      <span class="location-city">Tarnowskie Góry</span>
-      <span class="location-address">ul. Słoneczników 41, 42-606</span>
-      <span class="location-hours">Pn–Pt 5:00–21:00, So 6:00–20:00, Nd 8:00–20:00</span>
-    </li>
-  </ul>
+  <div class="grain-cards">
+    <div class="grain-card reveal-stagger" style="transition-delay:0s">
+      <div class="grain-card-num">01</div>
+      <div class="grain-card-icon">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><circle cx="20" cy="18" r="6"/><circle cx="30" cy="18" r="4"/><circle cx="24" cy="28" r="5"/><line x1="24" y1="4" x2="24" y2="14"/><path d="M20,18 C16,14 14,10 14,8" stroke-linecap="round"/><path d="M28,18 C30,14 32,10 34,8" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Ziarno</h3>
+      <p>Mąka ze śląskich pól. Bez polepszaczy. Bez chemii. Czysta natura w każdym ziarnie.</p>
+    </div>
+    <div class="grain-card reveal-stagger" style="transition-delay:.1s">
+      <div class="grain-card-num">02</div>
+      <div class="grain-card-icon">
+        <svg viewBox="0 0 48 48"><rect x="10" y="14" width="28" height="30" rx="3"/><path d="M8,14 L40,14"/><rect x="14" y="8" width="20" height="6" rx="2"/><circle cx="20" cy="26" r="2" fill="currentColor"/><circle cx="28" cy="26" r="2" fill="currentColor"/><circle cx="24" cy="34" r="2" fill="currentColor"/></svg>
+      </div>
+      <h3>Zakwas</h3>
+      <p>Naturalny zakwas żytni. 36 godzin fermentacji. Prowadzony od pokoleń, bez drożdży przemysłowych.</p>
+    </div>
+    <div class="grain-card reveal-stagger" style="transition-delay:.2s">
+      <div class="grain-card-num">03</div>
+      <div class="grain-card-icon">
+        <svg viewBox="0 0 48 48"><ellipse cx="24" cy="26" rx="18" ry="14"/><path d="M12,26 C12,20 18,16 24,16 C30,16 36,20 36,26"/><path d="M16,26 C16,22 20,20 24,20 C28,20 32,22 32,26"/><ellipse cx="24" cy="12" rx="8" ry="4"/><ellipse cx="24" cy="12" rx="12" ry="2" fill="none"/></svg>
+      </div>
+      <h3>Ciasto</h3>
+      <p>Mieszamy. Czekamy. Składamy. Gotowy bochenek. Ciepły. Pachnący. Prawdziwy.</p>
+    </div>
+  </div>
 </section>
 
-<!-- ========== SECTION 6: SIGNATURE ========== -->
-<section class="signature-section" id="signature">
+<!-- ========== SECTION 4: SCENA 3 — 4 PRODUKTY ========== -->
+<section class="section section-dark" id="scena3">
+  <div class="products-header reveal">
+    <h2>Wypiekamy z pasją</h2>
+    <p>Naturalne składniki. Tradycyjna receptura. Żadnych skrótów.</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card reveal-stagger" style="transition-delay:0s">
+      <div class="product-card-num-bg">01</div>
+      <div class="product-card-icon">
+        <svg viewBox="0 0 48 48"><ellipse cx="24" cy="22" rx="16" ry="12"/><path d="M12,22 C12,14 18,10 24,10 C30,10 36,14 36,22"/><path d="M14,22 C16,26 20,30 24,30 C28,30 32,26 34,22"/><line x1="20" y1="10" x2="18" y2="4"/><line x1="24" y1="10" x2="24" y2="4"/><line x1="28" y1="10" x2="30" y2="4"/></svg>
+      </div>
+      <h3>Wypieki</h3>
+      <p>Chleby na zakwasie, bułki pszenne i żytnie — tradycyjne receptury, lokalne składniki.</p>
+    </div>
+    <div class="product-card reveal-stagger" style="transition-delay:.1s">
+      <div class="product-card-num-bg">02</div>
+      <div class="product-card-icon">
+        <svg viewBox="0 0 48 48"><rect x="12" y="8" width="24" height="32" rx="3"/><line x1="12" y1="14" x2="36" y2="14"/><path d="M16,20 L20,30"/><path d="M24,20 L24,30"/><path d="M28,20 L24,30"/><path d="M32,20 L28,30"/></svg>
+      </div>
+      <h3>Żur</h3>
+      <p>Naturalny żur butelkowany. Prawdziwy śląski smak, bez konserwantów.</p>
+    </div>
+    <div class="product-card reveal-stagger" style="transition-delay:.2s">
+      <div class="product-card-num-bg">03</div>
+      <div class="product-card-icon">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="16"/><path d="M12,20 C12,12 18,8 24,8 C30,8 36,12 36,20 C36,12 30,32 24,32 C18,32 12,28 12,20"/><circle cx="20" cy="18" r="3" fill="none"/><circle cx="28" cy="18" r="3" fill="none"/><circle cx="24" cy="26" r="3" fill="none"/></svg>
+      </div>
+      <h3>Ciasta</h3>
+      <p>Serniki, drożdżówki, pączki — cukiernia z tradycją, bez sztucznych polepszaczy.</p>
+    </div>
+    <div class="product-card reveal-stagger" style="transition-delay:.3s">
+      <div class="product-card-num-bg">04</div>
+      <div class="product-card-icon">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="22" r="16"/><circle cx="24" cy="22" r="10"/><path d="M12,16 C14,12 18,8 24,8 C30,8 34,12 36,16"/><line x1="20" y1="8" x2="18" y2="2"/><line x1="28" y1="8" x2="30" y2="2"/></svg>
+      </div>
+      <h3>Lody Rzemieślnicze</h3>
+      <p>Ręcznie robione lody z naturalnych składników. Smak lata na Śląsku.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 5: SCENA 4 — PROCES ========== -->
+<section class="section section-light" id="scena4">
+  <div class="process-layout">
+    <div class="process-diagram reveal-left">
+      <svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg">
+        <!-- Vertical flow line -->
+        <path id="flow-line" d="M150,50 L150,380" stroke="#C2A990" stroke-width="2" fill="none"
+              stroke-dasharray="350" stroke-dashoffset="350" stroke-linecap="round"/>
+        <!-- Nodes -->
+        <circle cx="150" cy="50" r="16" fill="#B1C5A4" opacity=".9"/>
+        <text x="150" y="56" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">I</text>
+        <text x="180" y="54" fill="#2B2520" font-size="12" font-family="Satoshi, sans-serif">Ziarno</text>
+
+        <circle cx="150" cy="155" r="16" fill="#C2A990" opacity=".9"/>
+        <text x="150" y="161" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">II</text>
+        <text x="180" y="159" fill="#2B2520" font-size="12" font-family="Satoshi, sans-serif">Zakwas</text>
+
+        <circle cx="150" cy="265" r="16" fill="#C2A990" opacity=".9"/>
+        <text x="150" y="271" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">III</text>
+        <text x="180" y="269" fill="#2B2520" font-size="12" font-family="Satoshi, sans-serif">Piec</text>
+
+        <circle cx="150" cy="380" r="16" fill="#C2A990" opacity=".9"/>
+        <text x="150" y="386" text-anchor="middle" fill="white" font-size="12" font-family="sans-serif" font-weight="700">IV</text>
+        <text x="180" y="384" fill="#2B2520" font-size="12" font-family="Satoshi, sans-serif">Sklep</text>
+      </svg>
+    </div>
+    <div class="reveal-right">
+      <h2 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:500;color:var(--text-dark);margin-bottom:2rem">Rzemiosło w czterech aktach</h2>
+      <ul class="process-list">
+        <li class="process-list-item reveal" style="transition-delay:.1s">
+          <span class="process-list-num">I</span>
+          <div class="process-list-text">
+            <h4>Ziarno</h4>
+            <p>Mąka z lokalnych pól. Bez przemysłowych dodatków. Czysta natura.</p>
+          </div>
+        </li>
+        <li class="process-list-item reveal" style="transition-delay:.2s">
+          <span class="process-list-num">II</span>
+          <div class="process-list-text">
+            <h4>Zakwas</h4>
+            <p>Prowadzony od pokoleń. Bez drożdży przemysłowych. 36 godzin cierpliwości.</p>
+          </div>
+        </li>
+        <li class="process-list-item reveal" style="transition-delay:.3s">
+          <span class="process-list-num">III</span>
+          <div class="process-list-text">
+            <h4>Piec</h4>
+            <p>Tradycyjne piece ceramiczne. Równomierne ciepło. Chrupiąca skórka.</p>
+          </div>
+        </li>
+        <li class="process-list-item reveal" style="transition-delay:.4s">
+          <span class="process-list-num">IV</span>
+          <div class="process-list-text">
+            <h4>Sklep</h4>
+            <p>Codziennie świeże na 41 punktach. Od 6:00 rano. Od Piekar po Katowice.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 6: SCENA 5 — MAPA ========== -->
+<section class="section section-dark" id="scena5">
+  <div class="map-header reveal">
+    <h2>Znajdziesz nas na całym Śląsku</h2>
+    <p>41 punktów sprzedaży · Codziennie od świtu</p>
+  </div>
+  <div class="map-layout">
+    <div class="map-svg-container reveal-left">
+      <svg viewBox="0 0 340 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- Silesia simplified outline -->
+        <path d="M50,80 L90,40 L160,30 L230,45 L280,70 L300,110 L310,160
+                 L290,210 L250,260 L190,290 L130,295 L70,270 L35,220
+                 L25,160 L30,110 Z"
+              fill="none" stroke="rgba(245,235,224,.2)" stroke-width="1.5"/>
+        <path d="M55,82 L92,44 L158,34 L226,48 L275,73 L295,112 L305,158
+                 L286,208 L248,256 L190,285 L132,290 L73,266 L40,218
+                 L30,160 L34,112 Z"
+              fill="rgba(177,197,164,.04)" stroke="none"/>
+        <!-- City dots -->
+        <circle cx="140" cy="130" r="5" fill="#D8613C" class="map-dot" style="animation-delay:0s"/><text x="152" y="134" fill="rgba(245,235,224,.6)" font-size="9" font-family="Satoshi,sans-serif">Piekary Śl.</text>
+        <circle cx="115" cy="115" r="5" fill="#D8613C" class="map-dot" style="animation-delay:.3s"/><text x="96" y="108" fill="rgba(245,235,224,.6)" font-size="9" font-family="Satoshi,sans-serif" text-anchor="end">Bytom</text>
+        <circle cx="180" cy="155" r="5" fill="#D8613C" class="map-dot" style="animation-delay:.5s"/><text x="192" y="159" fill="rgba(245,235,224,.6)" font-size="9" font-family="Satoshi,sans-serif">Chorzów</text>
+        <circle cx="195" cy="170" r="6" fill="#B1C5A4" class="map-dot" style="animation-delay:.7s"/><text x="208" y="174" fill="rgba(245,235,224,.7)" font-size="10" font-family="Satoshi,sans-serif" font-weight="500">Katowice</text>
+        <circle cx="145" cy="165" r="5" fill="#D8613C" class="map-dot" style="animation-delay:.9s"/><text x="130" y="178" fill="rgba(245,235,224,.6)" font-size="9" font-family="Satoshi,sans-serif" text-anchor="end">Zabrze</text>
+        <circle cx="155" cy="175" r="5" fill="#D8613C" class="map-dot" style="animation-delay:1.1s"/>
+        <text x="140" y="188" fill="rgba(245,235,224,.6)" font-size="9" font-family="Satoshi,sans-serif" text-anchor="end">Ruda Śl.</text>
+        <circle cx="210" cy="190" r="4" fill="#D8613C" class="map-dot" style="animation-delay:1.3s"/><text x="222" y="194" fill="rgba(245,235,224,.6)" font-size="9" font-family="Satoshi,sans-serif">Mysłowice</text>
+        <circle cx="160" cy="95" r="5" fill="#D8613C" class="map-dot" style="animation-delay:1.5s"/><text x="172" y="99" fill="rgba(245,235,224,.6)" font-size="9" font-family="Satoshi,sans-serif">Tarnowskie Góry</text>
+      </svg>
+    </div>
+    <ul class="city-list reveal-right">
+      <li class="city-item"><h4>Piekary Śląskie</h4><p class="addr">ul. Węglowa 3, 41-943</p><p class="hours">Pn–Pt 5:00–21:00, So 6:00–21:00, Nd 9:00–21:00</p></li>
+      <li class="city-item"><h4>Bytom</h4><p class="addr">ul. Worpie 1a, 41-906</p><p class="hours">Pn–Pt 5:00–20:00, So 6:00–18:00, Nd 8:00–18:00</p></li>
+      <li class="city-item"><h4>Chorzów</h4><p class="addr">ul. Boczna 12, 41-516</p><p class="hours">Pn–So 6:00–20:00, Nd 8:00–18:00</p></li>
+      <li class="city-item"><h4>Katowice</h4><p class="addr">ul. Witosa 5, 40-832</p><p class="hours">Pn–Pt 6:00–21:00, So 6:00–21:00, Nd 8:00–20:00</p></li>
+      <li class="city-item"><h4>Zabrze</h4><p class="addr">ul. 3 Maja 28, 41-800</p><p class="hours">Pn–Pt 6:00–20:00, So 6:00–18:00, Nd 8:00–18:00</p></li>
+      <li class="city-item"><h4>Ruda Śląska</h4><p class="addr">ul. Solidarności 22, 41-706</p><p class="hours">Pn–So 5:00–20:00, Nd 8:00–18:00</p></li>
+      <li class="city-item"><h4>Mysłowice</h4><p class="addr">ul. Wysockiego 2, 41-400</p><p class="hours">—</p></li>
+      <li class="city-item"><h4>Tarnowskie Góry</h4><p class="addr">ul. Słoneczników 41, 42-606</p><p class="hours">Pn–Pt 5:00–21:00, So 6:00–20:00, Nd 8:00–20:00</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ========== SECTION 7: SCENA 6 — PODPIS ========== -->
+<section class="section section-overlay signature-section" id="scena6">
   <div class="container">
-    <span class="signature-label">Z rodzinnego domu prosto na Wasz stół</span>
+    <h2 class="reveal">Z rodzinnego domu prosto na Twój stół.</h2>
 
-    <svg class="signature-svg" id="sig-svg" viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg">
+    <svg class="signature-svg reveal" id="sig-svg" viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg">
       <path class="sign-path" d="M18,55 C22,40 30,32 40,28 C50,24 58,32 62,40 C66,48 64,58 58,62
                C52,66 46,60 48,52 C50,44 58,38 68,35 C78,32 88,36 92,44
                C96,52 92,62 84,65 C76,68 70,62 72,54"/>
@@ -775,65 +804,42 @@ a,button,input,select,textarea,.clickable{cursor:none}
                C512,42 520,36 530,34 C540,32 548,38 552,48"/>
     </svg>
 
-    <p class="signature-name">Jacek Bindrich</p>
-    <p class="signature-role">Właściciel · Piekarnia Bindrich</p>
+    <p class="signature-name reveal">Jacek Bindrich</p>
+    <p class="signature-role reveal">Właściciel · Piekarnia Bindrich</p>
   </div>
 </section>
 
-<!-- ========== SECTION 7: FOOTER ========== -->
+<!-- ========== FOOTER ========== -->
 <footer class="site-footer" id="kontakt">
   <div class="footer-grid">
     <div class="footer-col">
       <h4>Produkty</h4>
       <ul>
-        <li><a href="#">Wypieki</a></li>
-        <li><a href="#">Żur naturalny</a></li>
-        <li><a href="#">Ciasta</a></li>
-        <li><a href="#">Lody rzemieślnicze</a></li>
+        <li><a href="#">Wypieki</a></li><li><a href="#">Żur naturalny</a></li>
+        <li><a href="#">Ciasta</a></li><li><a href="#">Lody rzemieślnicze</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Nasza firma</h4>
       <ul>
-        <li><a href="#">O nas</a></li>
-        <li><a href="#">Kariera</a></li>
-        <li><a href="#">Aktualności</a></li>
-        <li><a href="#">Polityka prywatności</a></li>
+        <li><a href="#">O nas</a></li><li><a href="#">Kariera</a></li>
+        <li><a href="#">Aktualności</a></li><li><a href="#">Polityka prywatności</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Social</h4>
       <div class="footer-social-icons">
-        <a href="https://www.facebook.com/p/Bindrich-Piekarnia-Cukiernia-61578863667159/" aria-label="Facebook" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><use href="#icon-fb"/></svg>
-        </a>
-        <a href="https://www.instagram.com/piekarniacukierniabindrich/" aria-label="Instagram" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24"><use href="#icon-ig"/></svg>
-        </a>
-        <a href="#" aria-label="YouTube — placeholder">
-          <svg viewBox="0 0 24 24"><use href="#icon-yt"/></svg>
-        </a>
+        <a href="https://www.facebook.com/p/Bindrich-Piekarnia-Cukiernia-61578863667159/" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><use href="#icon-fb"/></svg></a>
+        <a href="https://www.instagram.com/piekarniacukierniabindrich/" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><use href="#icon-ig"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><use href="#icon-yt"/></svg></a>
       </div>
     </div>
     <div class="footer-col">
       <h4>Kontakt</h4>
       <ul>
-        <li>
-          <a href="tel:+48510211477" style="display:flex;align-items:center;gap:.5rem">
-            <svg width="14" height="14" viewBox="0 0 24 24" style="flex-shrink:0"><use href="#icon-phone"/></svg>
-            +48 510 211 477
-          </a>
-        </li>
-        <li>
-          <a href="mailto:support@piekarniabindrich.pl" style="display:flex;align-items:center;gap:.5rem">
-            <svg width="14" height="14" viewBox="0 0 24 24" style="flex-shrink:0"><use href="#icon-mail"/></svg>
-            support@piekarniabindrich.pl
-          </a>
-        </li>
-        <li style="display:flex;align-items:flex-start;gap:.5rem;color:rgba(249,249,249,.6);font-size:.85rem">
-          <svg width="14" height="14" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:4px"><use href="#icon-loc"/></svg>
-          <span>ul. Węglowa 3<br>41-943 Piekary Śląskie</span>
-        </li>
+        <li><a href="tel:+48510211477" style="display:flex;align-items:center;gap:.5rem"><svg width="14" height="14" viewBox="0 0 24 24" style="flex-shrink:0"><use href="#icon-phone"/></svg>+48 510 211 477</a></li>
+        <li><a href="mailto:support@piekarniabindrich.pl" style="display:flex;align-items:center;gap:.5rem"><svg width="14" height="14" viewBox="0 0 24 24" style="flex-shrink:0"><use href="#icon-mail"/></svg>support@piekarniabindrich.pl</a></li>
+        <li style="display:flex;align-items:flex-start;gap:.5rem;color:rgba(245,235,224,.4);font-size:.85rem"><svg width="14" height="14" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:4px"><use href="#icon-loc"/></svg><span>ul. Węglowa 3<br>41-943 Piekary Śląskie</span></li>
       </ul>
     </div>
   </div>
@@ -848,210 +854,105 @@ a,button,input,select,textarea,.clickable{cursor:none}
 (function(){
   'use strict';
 
-  // ========== DOM REFS ==========
   const header = document.getElementById('header');
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileLinks = document.querySelectorAll('[data-mobile-link]');
-  const heroImgContainer = document.getElementById('hero-image-container');
-  const heroContent = document.getElementById('hero-content');
   const sigSvg = document.getElementById('sig-svg');
   const cursorDot = document.getElementById('custom-cursor');
   const cursorTrail = document.getElementById('cursor-trail');
   const navLinks = document.querySelectorAll('#nav-links a');
 
-  // ========== MOBILE MENU TOGGLE ==========
+  // ========== MOBILE MENU ==========
   let menuOpen = false;
-
   function openMenu(){
-    menuOpen = true;
-    hamburger.classList.add('open');
-    mobileMenu.classList.add('open');
-    hamburger.setAttribute('aria-expanded','true');
-    mobileMenu.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
+    menuOpen=true;hamburger.classList.add('open');mobileMenu.classList.add('open');
+    hamburger.setAttribute('aria-expanded','true');mobileMenu.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
   }
-
   function closeMenu(){
-    menuOpen = false;
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    hamburger.setAttribute('aria-expanded','false');
-    mobileMenu.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
+    menuOpen=false;hamburger.classList.remove('open');mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded','false');mobileMenu.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
   }
-
-  hamburger.addEventListener('click',() => { menuOpen ? closeMenu() : openMenu(); });
-
-  mobileLinks.forEach(link => {
-    link.addEventListener('click',() => { closeMenu(); });
-  });
-
-  // Close on Escape
-  document.addEventListener('keydown',(e) => {
-    if(e.key === 'Escape' && menuOpen) closeMenu();
-  });
+  hamburger.addEventListener('click',()=>{menuOpen?closeMenu():openMenu()});
+  mobileLinks.forEach(l=>l.addEventListener('click',closeMenu));
+  document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&menuOpen)closeMenu()});
 
   // ========== ACTIVE SECTION TRACKING ==========
-  const sectionIds = ['produkty','filozofia','kontakt'];
-  const sectionEls = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
-
-  const sectionObserver = new IntersectionObserver((entries) => {
-    let bestEntry = null;
-    let bestRatio = 0;
-
-    entries.forEach(entry => {
-      if(entry.isIntersecting && entry.intersectionRatio > bestRatio){
-        bestRatio = entry.intersectionRatio;
-        bestEntry = entry;
-      }
-    });
-
-    if(bestEntry){
-      navLinks.forEach(link => {
-        const section = link.getAttribute('data-section');
-        link.classList.toggle('active', section === bestEntry.target.id);
+  const sectionIds = ['hero','scena1','scena2','scena3','scena4','scena5','scena6','kontakt'];
+  const sectionEls = sectionIds.map(id=>document.getElementById(id)).filter(Boolean);
+  const sectionObserver = new IntersectionObserver((entries)=>{
+    let best=null,bestR=0;
+    entries.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>bestR){bestR=e.intersectionRatio;best=e;}});
+    if(best){
+      navLinks.forEach(link=>{
+        const sec=link.getAttribute('data-section');
+        link.classList.toggle('active',sec===best.target.id);
       });
+      // Adjust header for dark/light sections
+      const isDark=best.target.classList.contains('section-dark');
+      if(isDark&&window.scrollY<100){
+        document.querySelectorAll('.nav-links a,.logo-text').forEach(el=>{el.style.color='#F5EBE0';});
+      }else if(!isDark||window.scrollY>=80){
+        document.querySelectorAll('.nav-links a,.logo-text').forEach(el=>{el.style.color='';});
+      }
     }
   },{threshold:[0,0.2,0.4,0.6,0.8,1],rootMargin:'-80px 0px -10% 0px'});
+  sectionEls.forEach(el=>sectionObserver.observe(el));
 
-  sectionEls.forEach(el => sectionObserver.observe(el));
+  // ========== REVEAL ON SCROLL ==========
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target);}});
+  },{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-stagger').forEach(el=>revealObserver.observe(el));
 
-  // ========== INTERSECTION OBSERVER — REVEAL ON SCROLL ==========
-  const revealEls = document.querySelectorAll('.reveal');
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
-
-  revealEls.forEach(el => revealObserver.observe(el));
-
-  // ========== SIGNATURE SVG ANIMATION ==========
-  const sigObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        entry.target.classList.add('signed');
-        sigObserver.unobserve(entry.target);
-      }
-    });
+  // ========== SIGNATURE ANIMATION ==========
+  const sigObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('signed');sigObserver.unobserve(entry.target);}});
   },{threshold:0.5});
+  if(sigSvg)sigObserver.observe(sigSvg);
 
-  if(sigSvg) sigObserver.observe(sigSvg);
-
-  // ========== HERO PARALLAX + CONTENT FADE ==========
-  let ticking = false;
-
-  function updateParallax(){
-    const scrollY = window.scrollY;
-    const heroHeight = window.innerHeight;
-
-    if(scrollY <= heroHeight){
-      const ratio = scrollY / heroHeight;
-
-      // Image parallax
-      if(heroImgContainer){
-        const translateY = ratio * -80;
-        const scale = 1 + (ratio * 0.08);
-        heroImgContainer.style.transform = `translateX(-50%) translateY(${translateY}px) scale(${scale})`;
-        heroImgContainer.style.opacity = 1 - (ratio * 0.6);
-      }
-
-      // Content shrink + fade on scroll (starts after 10vh scroll)
-      if(heroContent){
-        const fadeRatio = Math.max(0, (ratio - 0.1) / 0.4); // fade between 10vh and 50vh
-        const clampedFade = Math.min(1, fadeRatio);
-        heroContent.style.opacity = 1 - clampedFade;
-        heroContent.style.transform = `translateY(${clampedFade * -60}px)`;
-      }
-    }
-    ticking = false;
+  // ========== FLOW LINE ANIMATION ==========
+  const flowLine = document.getElementById('flow-line');
+  if(flowLine){
+    const flowObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          flowLine.style.transition='stroke-dashoffset 3s ease-out';
+          flowLine.style.strokeDashoffset='0';
+          flowObserver.unobserve(entry.target);
+        }
+      });
+    },{threshold:0.3});
+    flowObserver.observe(flowLine);
   }
 
-  window.addEventListener('scroll',() => {
-    if(!ticking){
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  },{passive:true});
-
-  updateParallax();
-
   // ========== HEADER SCROLL STATE ==========
-  let headerTicking = false;
-
-  window.addEventListener('scroll',() => {
+  let headerTicking=false;
+  window.addEventListener('scroll',()=>{
     if(!headerTicking){
-      requestAnimationFrame(() => {
-        if(window.scrollY > 80){
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
-        }
-        headerTicking = false;
+      requestAnimationFrame(()=>{
+        if(window.scrollY>80)header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+        headerTicking=false;
       });
-      headerTicking = true;
+      headerTicking=true;
     }
   },{passive:true});
 
-  // ========== SMOOTH REVEAL STAGGER ==========
-  const sections = document.querySelectorAll('.section,.philosophy,.signature-section');
-  sections.forEach(section => {
-    const items = section.querySelectorAll('.reveal');
-    items.forEach((item,i) => {
-      item.style.transitionDelay = (i * 0.08) + 's';
-    });
-  });
-
-  const locItems = document.querySelectorAll('.location-item.reveal');
-  locItems.forEach((item,i) => {
-    item.style.transitionDelay = (i * 0.06) + 's';
-  });
-
-  // ========== CUSTOM CURSOR (desktop only) ==========
-  if(window.matchMedia('(min-width:769px)').matches && cursorDot && cursorTrail){
-    let mouseX = 0, mouseY = 0;
-    let trailX = 0, trailY = 0;
-
-    document.addEventListener('mousemove',(e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
-    });
-
-    function updateTrail(){
-      trailX += (mouseX - trailX) * 0.15;
-      trailY += (mouseY - trailY) * 0.15;
-      cursorTrail.style.left = trailX + 'px';
-      cursorTrail.style.top = trailY + 'px';
-      requestAnimationFrame(updateTrail);
-    }
+  // ========== CUSTOM CURSOR ==========
+  if(window.matchMedia('(min-width:769px)').matches&&cursorDot&&cursorTrail){
+    let mx=0,my=0,tx=0,ty=0;
+    document.addEventListener('mousemove',(e)=>{mx=e.clientX;my=e.clientY;cursorDot.style.left=mx+'px';cursorDot.style.top=my+'px';});
+    function updateTrail(){tx+=(mx-tx)*.15;ty+=(my-ty)*.15;cursorTrail.style.left=tx+'px';cursorTrail.style.top=ty+'px';requestAnimationFrame(updateTrail);}
     updateTrail();
-
-    // Expand cursor on interactive elements
-    const hoverTargets = document.querySelectorAll('a,button,.product-card,.hero-cta,.hero-cta-secondary');
-    hoverTargets.forEach(el => {
-      el.addEventListener('mouseenter',() => {
-        cursorDot.classList.add('hover');
-        cursorTrail.classList.add('hover');
-      });
-      el.addEventListener('mouseleave',() => {
-        cursorDot.classList.remove('hover');
-        cursorTrail.classList.remove('hover');
-      });
+    document.querySelectorAll('a,button,.product-card,.hero-cta,.hero-cta-secondary,.grain-card,.city-item').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cursorDot.classList.add('hover');cursorTrail.classList.add('hover');});
+      el.addEventListener('mouseleave',()=>{cursorDot.classList.remove('hover');cursorTrail.classList.remove('hover');});
     });
-
-    // Hide cursor when leaving window
-    document.addEventListener('mouseleave',() => {
-      cursorDot.style.opacity = '0';
-    });
-    document.addEventListener('mouseenter',() => {
-      cursorDot.style.opacity = '.8';
-    });
+    document.addEventListener('mouseleave',()=>{cursorDot.style.opacity='0'});
+    document.addEventListener('mouseenter',()=>{cursorDot.style.opacity='.8'});
   }
 
 })();
