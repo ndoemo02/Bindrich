@@ -416,6 +416,168 @@ a,button,.product-card,.clickable{cursor:none}
   flex-wrap:wrap;gap:.5rem;font-size:.8rem;color:rgba(245,235,224,.3);
 }
 
+/* ========== 3D PRODUCT CAROUSEL — SCENA 3 ========== */
+#scena3.carousel-section{
+  position:relative;min-height:400vh;padding:0;overflow:hidden;
+}
+#carousel-scene{
+  position:sticky;top:0;height:100vh;z-index:0;
+  display:flex;align-items:center;justify-content:center;
+  perspective:1100px;pointer-events:none;
+  background:
+    radial-gradient(ellipse at center,rgba(177,197,164,.04) 0%,transparent 60%),
+    radial-gradient(ellipse at 30% 40%,rgba(216,97,60,.03) 0%,transparent 50%),
+    var(--warm-dark);
+}
+#carousel-cube{
+  --s:min(52vw,52vh,460px);
+  width:var(--s);height:var(--s);
+  position:relative;
+  transform-style:preserve-3d;
+  transform:rotateY(0deg);
+  will-change:transform;
+}
+.carousel-face{
+  position:absolute;inset:0;overflow:hidden;
+  backface-visibility:hidden;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 48px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0,rgba(255,255,255,.015) 1px,transparent 1px,transparent 48px),
+    #1c1814;
+}
+.carousel-face[data-face="0"]{transform:rotateY(0deg) translateZ(calc(var(--s)/2))}
+.carousel-face[data-face="1"]{transform:rotateY(90deg) translateZ(calc(var(--s)/2))}
+.carousel-face[data-face="2"]{transform:rotateY(180deg) translateZ(calc(var(--s)/2))}
+.carousel-face[data-face="3"]{transform:rotateY(270deg) translateZ(calc(var(--s)/2))}
+
+.carousel-wooden-frame{
+  position:absolute;inset:18px;overflow:hidden;
+  background:#6B4F32;
+  box-shadow:
+    inset 3px 3px 6px rgba(255,255,255,.06),
+    inset -3px -3px 6px rgba(0,0,0,.2),
+    8px 8px 24px rgba(0,0,0,.35);
+}
+.carousel-wooden-frame img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+.carousel-wooden-frame::before{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    repeating-linear-gradient(2deg,transparent,transparent 2px,rgba(139,109,74,.08) 2px,rgba(139,109,74,.08) 3px),
+    repeating-linear-gradient(92deg,transparent,transparent 1px,rgba(107,79,50,.05) 1px,rgba(107,79,50,.05) 2px);
+}
+.carousel-wooden-frame::after{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.5);
+}
+.carousel-wooden-frame .corner{
+  position:absolute;width:20px;height:20px;z-index:3;pointer-events:none;
+}
+.carousel-wooden-frame .corner::before,
+.carousel-wooden-frame .corner::after{
+  content:'';position:absolute;
+  background:linear-gradient(135deg,#A0845C,#6B4F32);
+  box-shadow:1px 1px 3px rgba(0,0,0,.3);
+}
+.corner-tl{top:-2px;left:-2px}
+.corner-tl::before{width:18px;height:3px;top:0;left:0}
+.corner-tl::after{width:3px;height:18px;top:0;left:0}
+.corner-tr{top:-2px;right:-2px}
+.corner-tr::before{width:18px;height:3px;top:0;right:0}
+.corner-tr::after{width:3px;height:18px;top:0;right:0}
+.corner-bl{bottom:-2px;left:-2px}
+.corner-bl::before{width:18px;height:3px;bottom:0;left:0}
+.corner-bl::after{width:3px;height:18px;bottom:0;left:0}
+.corner-br{bottom:-2px;right:-2px}
+.corner-br::before{width:18px;height:3px;bottom:0;right:0}
+.corner-br::after{width:3px;height:18px;bottom:0;right:0}
+
+.carousel-face-num{
+  position:absolute;bottom:1.5rem;right:1.75rem;
+  font-family:var(--font-nums);font-size:clamp(2.5rem,6vw,5rem);
+  letter-spacing:.04em;color:rgba(255,255,255,.04);
+  pointer-events:none;user-select:none;z-index:0;
+}
+
+/* Product info — left overlay */
+#carousel-product-info{
+  position:fixed;left:clamp(1rem,3vw,2.5rem);top:50%;transform:translateY(-50%);
+  z-index:10;max-width:300px;pointer-events:auto;
+  transition:opacity .35s ease;
+}
+#carousel-product-info .carousel-tag{
+  font-family:var(--font-body);font-size:.65rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--micro);margin-bottom:1rem;
+}
+#carousel-product-info h2{
+  font-family:var(--font-display);font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:500;line-height:.95;margin-bottom:1rem;color:var(--text-light);
+}
+#carousel-product-info .carousel-desc{
+  font-family:var(--font-body);font-size:.85rem;line-height:1.7;
+  color:rgba(245,235,224,.55);margin-bottom:1.75rem;
+}
+#carousel-product-info .carousel-cta{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.65rem 1.4rem;border:1px solid var(--accent);
+  color:var(--accent);font-family:var(--font-body);font-size:.7rem;
+  letter-spacing:.15em;text-transform:uppercase;text-decoration:none;
+  transition:background .25s,color .25s;cursor:pointer;
+}
+#carousel-product-info .carousel-cta:hover{background:var(--accent);color:var(--warm-dark)}
+
+/* Face caption — bottom center */
+#carousel-caption{
+  position:fixed;bottom:6.5rem;left:50%;transform:translateX(-50%);
+  z-index:10;text-align:center;pointer-events:none;user-select:none;
+}
+#carousel-caption-num{
+  font-family:var(--font-body);font-size:.55rem;letter-spacing:.3em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:.15rem;
+}
+#carousel-caption-name{
+  font-family:var(--font-display);font-size:clamp(1.4rem,3.5vw,2.5rem);
+  letter-spacing:.06em;color:rgba(245,235,224,.35);line-height:1;
+}
+
+/* Progress bar — bottom */
+#carousel-progress{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+  z-index:10;display:flex;gap:0;align-items:center;
+}
+.carousel-segment{
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  cursor:pointer;padding:0 .75rem;position:relative;
+}
+.carousel-segment .carousel-seg-line{
+  width:60px;height:2px;background:rgba(245,235,224,.2);
+  transition:opacity .3s,background .3s;
+}
+.carousel-segment.active .carousel-seg-line{background:var(--accent)}
+.carousel-segment .carousel-seg-label{
+  font-family:var(--font-body);font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(245,235,224,.3);
+  transition:color .3s;
+}
+.carousel-segment.active .carousel-seg-label{color:var(--accent);font-weight:600}
+
+/* Carousel responsive */
+@media(max-width:768px){
+  #carousel-cube{--s:min(74vw,48vh,340px)}
+  #carousel-scene{align-items:flex-start;padding-top:15vh}
+  #carousel-product-info{
+    position:relative;left:auto;top:auto;transform:none;
+    max-width:100%;margin:0 1rem 2rem;padding:0;
+  }
+  #carousel-product-info h2{font-size:1.8rem}
+  #carousel-caption{bottom:5.5rem}
+  #carousel-progress{bottom:1rem}
+  .carousel-segment .carousel-seg-line{width:38px}
+  .carousel-segment{padding:0 .35rem}
+}
+
 /* ========== RESPONSIVE ========== */
 @media(max-width:768px){
   body{cursor:auto}
@@ -630,46 +792,77 @@ a,button,.product-card,.clickable{cursor:none}
   </div>
 </section>
 
-<!-- ========== SECTION 4: SCENA 3 — 4 PRODUKTY ========== -->
-<section class="section section-dark" id="scena3">
-  <div class="products-header reveal">
-    <h2>Wypiekamy z pasją</h2>
-    <p>Naturalne składniki. Tradycyjna receptura. Żadnych skrótów.</p>
-  </div>
-  <div class="products-grid">
-    <div class="product-card reveal-stagger" style="transition-delay:0s">
-      <div class="product-card-num-bg">01</div>
-      <div class="product-card-icon">
-        <svg viewBox="0 0 48 48"><ellipse cx="24" cy="22" rx="16" ry="12"/><path d="M12,22 C12,14 18,10 24,10 C30,10 36,14 36,22"/><path d="M14,22 C16,26 20,30 24,30 C28,30 32,26 34,22"/><line x1="20" y1="10" x2="18" y2="4"/><line x1="24" y1="10" x2="24" y2="4"/><line x1="28" y1="10" x2="30" y2="4"/></svg>
+<!-- ========== SECTION 4: SCENA 3 — 3D PRODUCT CAROUSEL ========== -->
+<section class="carousel-section" id="scena3">
+
+  <!-- 3D Scene — sticky within section -->
+  <div id="carousel-scene">
+    <div id="carousel-cube">
+      <div class="carousel-face" data-face="0">
+        <div class="carousel-wooden-frame">
+          <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+          <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+        </div>
+        <span class="carousel-face-num">01</span>
       </div>
-      <h3>Wypieki</h3>
-      <p>Chleby na zakwasie, bułki pszenne i żytnie — tradycyjne receptury, lokalne składniki.</p>
-    </div>
-    <div class="product-card reveal-stagger" style="transition-delay:.1s">
-      <div class="product-card-num-bg">02</div>
-      <div class="product-card-icon">
-        <svg viewBox="0 0 48 48"><rect x="12" y="8" width="24" height="32" rx="3"/><line x1="12" y1="14" x2="36" y2="14"/><path d="M16,20 L20,30"/><path d="M24,20 L24,30"/><path d="M28,20 L24,30"/><path d="M32,20 L28,30"/></svg>
+      <div class="carousel-face" data-face="1">
+        <div class="carousel-wooden-frame">
+          <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+          <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+        </div>
+        <span class="carousel-face-num">02</span>
       </div>
-      <h3>Żur</h3>
-      <p>Naturalny żur butelkowany. Prawdziwy śląski smak, bez konserwantów.</p>
-    </div>
-    <div class="product-card reveal-stagger" style="transition-delay:.2s">
-      <div class="product-card-num-bg">03</div>
-      <div class="product-card-icon">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="16"/><path d="M12,20 C12,12 18,8 24,8 C30,8 36,12 36,20 C36,12 30,32 24,32 C18,32 12,28 12,20"/><circle cx="20" cy="18" r="3" fill="none"/><circle cx="28" cy="18" r="3" fill="none"/><circle cx="24" cy="26" r="3" fill="none"/></svg>
+      <div class="carousel-face" data-face="2">
+        <div class="carousel-wooden-frame">
+          <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+          <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+        </div>
+        <span class="carousel-face-num">03</span>
       </div>
-      <h3>Ciasta</h3>
-      <p>Serniki, drożdżówki, pączki — cukiernia z tradycją, bez sztucznych polepszaczy.</p>
-    </div>
-    <div class="product-card reveal-stagger" style="transition-delay:.3s">
-      <div class="product-card-num-bg">04</div>
-      <div class="product-card-icon">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="22" r="16"/><circle cx="24" cy="22" r="10"/><path d="M12,16 C14,12 18,8 24,8 C30,8 34,12 36,16"/><line x1="20" y1="8" x2="18" y2="2"/><line x1="28" y1="8" x2="30" y2="2"/></svg>
+      <div class="carousel-face" data-face="3">
+        <div class="carousel-wooden-frame">
+          <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+          <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+        </div>
+        <span class="carousel-face-num">04</span>
       </div>
-      <h3>Lody Rzemieślnicze</h3>
-      <p>Ręcznie robione lody z naturalnych składników. Smak lata na Śląsku.</p>
     </div>
   </div>
+
+  <!-- Product info — left overlay -->
+  <div id="carousel-product-info">
+    <div class="carousel-tag">01 / Nasze produkty</div>
+    <h2>Wypieki</h2>
+    <p class="carousel-desc">Chleby na zakwasie, bułki pszenne i żytnie — tradycyjne receptury z lokalnych składników, bez sztucznych polepszaczy.</p>
+    <a href="#" class="carousel-cta">Zobacz wszystkie →</a>
+  </div>
+
+  <!-- Face caption -->
+  <div id="carousel-caption">
+    <div id="carousel-caption-num">01</div>
+    <div id="carousel-caption-name">WYPIEKI</div>
+  </div>
+
+  <!-- Progress bar -->
+  <div id="carousel-progress">
+    <div class="carousel-segment active" data-stop="0">
+      <div class="carousel-seg-line"></div>
+      <div class="carousel-seg-label">Wypieki</div>
+    </div>
+    <div class="carousel-segment" data-stop="1">
+      <div class="carousel-seg-line"></div>
+      <div class="carousel-seg-label">Żur</div>
+    </div>
+    <div class="carousel-segment" data-stop="2">
+      <div class="carousel-seg-line"></div>
+      <div class="carousel-seg-label">Ciasta</div>
+    </div>
+    <div class="carousel-segment" data-stop="3">
+      <div class="carousel-seg-line"></div>
+      <div class="carousel-seg-label">Lody</div>
+    </div>
+  </div>
+
 </section>
 
 <!-- ========== SECTION 5: SCENA 4 — PROCES ========== -->
@@ -891,7 +1084,7 @@ a,button,.product-card,.clickable{cursor:none}
         link.classList.toggle('active',sec===best.target.id);
       });
       // Adjust header for dark/light sections
-      const isDark=best.target.classList.contains('section-dark');
+      const isDark=best.target.classList.contains('section-dark')||best.target.classList.contains('carousel-section');
       if(isDark&&window.scrollY<100){
         document.querySelectorAll('.nav-links a,.logo-text').forEach(el=>{el.style.color='#F5EBE0';});
       }else if(!isDark||window.scrollY>=80){
@@ -953,6 +1146,123 @@ a,button,.product-card,.clickable{cursor:none}
     });
     document.addEventListener('mouseleave',()=>{cursorDot.style.opacity='0'});
     document.addEventListener('mouseenter',()=>{cursorDot.style.opacity='.8'});
+
+    // Add carousel elements to hover targets
+    document.querySelectorAll('.carousel-segment,.carousel-cta').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cursorDot.classList.add('hover');cursorTrail.classList.add('hover');});
+      el.addEventListener('mouseleave',()=>{cursorDot.classList.remove('hover');cursorTrail.classList.remove('hover');});
+    });
+  }
+
+  // ========== 3D PRODUCT CAROUSEL ==========
+  const carouselSection = document.getElementById('scena3');
+  if(carouselSection){
+    const CAROUSEL_PRODUCTS = [
+      {name:'WYPIEKI',title:'Wypieki',tag:'01 / Nasze produkty',
+       desc:'Chleby na zakwasie, bułki pszenne i żytnie — tradycyjne receptury z lokalnych składników, bez sztucznych polepszaczy.',
+       img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=85',cta:'#produkty-wypieki'},
+      {name:'ŻUR',title:'Żur',tag:'02 / Naturalny specjał',
+       desc:'Naturalny żur butelkowany z żytniego zakwasu. Prawdziwy śląski smak — bez konserwantów, bez ulepszaczy. Tradycja w butelce.',
+       img:'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=85',cta:'#produkty-zur'},
+      {name:'CIASTA',title:'Ciasta',tag:'03 / Cukiernia',
+       desc:'Serniki, drożdżówki, pączki — domowe ciasta z naturalnych składników. Cukiernia z wieloletnią tradycją, bez chemii i skrótów.',
+       img:'https://images.unsplash.com/photo-1558303847-f5cd3f0e3a49?auto=format&fit=crop&w=600&q=85',cta:'#produkty-ciasta'},
+      {name:'LODY RZEMIEŚLNICZE',title:'Lody Rzemieślnicze',tag:'04 / Ręczna robota',
+       desc:'Ręcznie robione lody z naturalnych składników — kremowe, intensywne w smaku. Smak lata na Śląsku, bez sztucznych barwników.',
+       img:'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=600&q=85',cta:'#produkty-lody'}
+    ];
+    const N=4;
+    const STOPS=[{ry:0},{ry:-90},{ry:-180},{ry:-270}];
+
+    const carouselDom={
+      cube:document.getElementById('carousel-cube'),
+      faces:[...document.querySelectorAll('.carousel-face')],
+      productInfo:document.getElementById('carousel-product-info'),
+      captionNum:document.getElementById('carousel-caption-num'),
+      captionName:document.getElementById('carousel-caption-name'),
+      segments:[...document.querySelectorAll('.carousel-segment')]
+    };
+
+    const faceImgIdx=new Array(4).fill(-1);
+    const imagePromises=new Map();
+
+    const preloadImage=(src)=>{
+      if(imagePromises.has(src))return imagePromises.get(src);
+      const p=(async()=>{const img=new Image();img.src=src;await img.decode().catch(()=>{});return img;})();
+      imagePromises.set(src,p);return p;
+    };
+
+    CAROUSEL_PRODUCTS.forEach(p=>preloadImage(p.img));
+
+    async function setFaceImage(faceIdx,imgIdx){
+      if(faceImgIdx[faceIdx]===imgIdx)return;
+      faceImgIdx[faceIdx]=imgIdx;
+      const src=CAROUSEL_PRODUCTS[imgIdx].img;
+      const face=carouselDom.faces[faceIdx];
+      await preloadImage(src);
+      if(faceImgIdx[faceIdx]!==imgIdx)return;
+      const frame=face.querySelector('.carousel-wooden-frame');
+      let img=frame.querySelector('img');
+      if(!img){img=new Image();frame.appendChild(img);}
+      img.alt=CAROUSEL_PRODUCTS[imgIdx].name;img.src=src;
+    }
+
+    for(let i=0;i<N;i++)setFaceImage(i,i);
+
+    let lastFaceIdx=-1;
+    const updateCarouselUI=(progress)=>{
+      const t=progress*(N-1);
+      const idx=Math.min(N-1,Math.max(0,Math.round(t)));
+      if(idx!==lastFaceIdx){
+        lastFaceIdx=idx;
+        const p=CAROUSEL_PRODUCTS[idx];
+        carouselDom.captionNum.textContent=String(idx+1).padStart(2,'0');
+        carouselDom.captionName.textContent=p.name;
+        carouselDom.segments.forEach((seg,i)=>seg.classList.toggle('active',i===idx));
+        carouselDom.productInfo.querySelector('.carousel-tag').textContent=p.tag;
+        carouselDom.productInfo.querySelector('h2').textContent=p.title;
+        carouselDom.productInfo.querySelector('.carousel-desc').textContent=p.desc;
+        carouselDom.productInfo.querySelector('.carousel-cta').setAttribute('href',p.cta);
+      }
+    };
+
+    const easeInOutQuad=t=>t<.5?2*t*t:-1+(4-2*t)*t;
+
+    const updateCubeTransform=(progress)=>{
+      const t=progress*(N-1);
+      const i=Math.min(Math.floor(t),N-2);
+      const f=easeInOutQuad(t-i);
+      const a=STOPS[i],b=STOPS[i+1];
+      const ry=a.ry+(b.ry-a.ry)*f;
+      carouselDom.cube.style.transform=`rotateY(${ry}deg)`;
+    };
+
+    let carouselSmooth=0;
+    const onCarouselScroll=()=>{
+      const sectionH=carouselSection.offsetHeight;
+      const viewH=window.innerHeight;
+      const scrollableH=Math.max(1,sectionH-viewH);
+      const raw=(window.scrollY-carouselSection.offsetTop)/scrollableH;
+      const target=Math.max(0,Math.min(1,raw));
+      carouselSmooth+=(target-carouselSmooth)*0.12;
+      updateCarouselUI(carouselSmooth);
+      updateCubeTransform(carouselSmooth);
+    };
+
+    window.addEventListener('scroll',onCarouselScroll,{passive:true});
+    window.addEventListener('resize',onCarouselScroll,{passive:true});
+    onCarouselScroll();
+
+    carouselDom.segments.forEach(seg=>{
+      seg.addEventListener('click',()=>{
+        const stopIdx=parseInt(seg.dataset.stop);
+        if(stopIdx>=0&&stopIdx<N){
+          const sectionH=carouselSection.offsetHeight;
+          const targetY=carouselSection.offsetTop+(sectionH-window.innerHeight)*(stopIdx/(N-1));
+          window.scrollTo({top:targetY,behavior:'smooth'});
+        }
+      });
+    });
   }
 
 })();

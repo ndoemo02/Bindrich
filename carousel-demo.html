@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piekarnia Bindrich — Produkty</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+
+<style>
+/* ========== RESET ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ========== TOKENS ========== */
+:root{
+  --bg:#CFCABE;
+  --fg:#2B2520;
+  --muted:#615852;
+  --accent:#B1C5A4;
+  --accent-hover:#9BB58D;
+  --micro:#D8613C;
+  --cream:#F9F9F9;
+  --wood:#8B6D4A;
+  --wood-dark:#6B4F32;
+  --wood-light:#A0845C;
+  --wood-inner:#5C3D24;
+  --font-display:'Cormorant Garamond',serif;
+  --font-body:'Satoshi','DM Sans',sans-serif;
+  --font-nums:'DM Serif Display',serif;
+  --s:min(60vw,60vh,500px);
+  --ui-inset:2rem;
+  --card-bg:rgba(43,37,32,.92);
+  --card-border:rgba(177,197,164,.2);
+}
+
+/* ========== BASE ========== */
+html{scroll-behavior:auto}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--font-body);overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ========== 3D SCENE — FIXED BACKGROUND ========== */
+#scene{
+  position:fixed;inset:0;z-index:0;
+  display:flex;align-items:center;justify-content:center;
+  perspective:1100px;pointer-events:none;
+}
+
+#cube{
+  --s:min(60vw,60vh,500px);
+  width:var(--s);height:var(--s);
+  position:relative;
+  transform-style:preserve-3d;
+  /* 4 faces → rotate on Y axis only */
+  transform:rotateY(0deg);
+  will-change:transform;
+}
+
+.face{
+  position:absolute;inset:0;overflow:hidden;
+  backface-visibility:hidden;
+  /* grid pattern background like original */
+  background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 48px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.03) 0,rgba(0,0,0,.03) 1px,transparent 1px,transparent 48px),
+    var(--bg);
+}
+
+/* 4 faces on Y axis — no top/bottom */
+.face[data-face="0"]{transform:rotateY(0deg) translateZ(calc(var(--s)/2))}
+.face[data-face="1"]{transform:rotateY(90deg) translateZ(calc(var(--s)/2))}
+.face[data-face="2"]{transform:rotateY(180deg) translateZ(calc(var(--s)/2))}
+.face[data-face="3"]{transform:rotateY(270deg) translateZ(calc(var(--s)/2))}
+
+/* ========== WOODEN FRAME ========== */
+.wooden-frame{
+  position:absolute;inset:16px;overflow:hidden;
+  background:var(--wood-dark);
+  box-shadow:
+    inset 3px 3px 6px rgba(255,255,255,.06),
+    inset -3px -3px 6px rgba(0,0,0,.2),
+    8px 8px 24px rgba(0,0,0,.3);
+}
+
+.wooden-frame img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+}
+
+/* Wood grain overlay */
+.wooden-frame::before{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    repeating-linear-gradient(2deg,
+      transparent,transparent 2px,
+      rgba(139,109,74,.08) 2px,rgba(139,109,74,.08) 3px),
+    repeating-linear-gradient(92deg,
+      transparent,transparent 1px,
+      rgba(107,79,50,.05) 1px,rgba(107,79,50,.05) 2px);
+}
+
+/* Inner shadow for depth */
+.wooden-frame::after{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.5);
+}
+
+/* Corner joints — mitered look */
+.wooden-frame .corner{
+  position:absolute;width:20px;height:20px;z-index:3;pointer-events:none;
+}
+.wooden-frame .corner::before,
+.wooden-frame .corner::after{
+  content:'';position:absolute;
+  background:linear-gradient(135deg,var(--wood-light),var(--wood-dark));
+  box-shadow:1px 1px 3px rgba(0,0,0,.3);
+}
+.wooden-frame .corner-tl{top:-2px;left:-2px}
+.wooden-frame .corner-tl::before{width:18px;height:3px;top:0;left:0}
+.wooden-frame .corner-tl::after{width:3px;height:18px;top:0;left:0}
+.wooden-frame .corner-tr{top:-2px;right:-2px}
+.wooden-frame .corner-tr::before{width:18px;height:3px;top:0;right:0}
+.wooden-frame .corner-tr::after{width:3px;height:18px;top:0;right:0}
+.wooden-frame .corner-bl{bottom:-2px;left:-2px}
+.wooden-frame .corner-bl::before{width:18px;height:3px;bottom:0;left:0}
+.wooden-frame .corner-bl::after{width:3px;height:18px;bottom:0;left:0}
+.wooden-frame .corner-br{bottom:-2px;right:-2px}
+.wooden-frame .corner-br::before{width:18px;height:3px;bottom:0;right:0}
+.wooden-frame .corner-br::after{width:3px;height:18px;bottom:0;right:0}
+
+/* Face placeholder number */
+.face-num{
+  position:absolute;bottom:1.5rem;right:1.75rem;
+  font-family:var(--font-nums);font-size:clamp(3rem,8vw,6rem);
+  letter-spacing:.04em;color:rgba(43,37,32,.05);
+  pointer-events:none;user-select:none;z-index:0;
+}
+
+/* ========== SCROLL CONTAINER ========== */
+/* Each section = one face. User scrolls through sections to rotate cube. */
+#scroll_container{position:relative;z-index:1}
+
+section{min-height:100vh;display:flex;align-items:center;padding:6rem 5rem}
+
+/* ========== LEFT COLUMN — INFO CARD ========== */
+.product-info{
+  position:fixed;left:var(--ui-inset);top:50%;transform:translateY(-50%);
+  z-index:10;max-width:320px;
+  transition:opacity .35s ease;
+}
+.product-info .tag{
+  font-family:var(--font-body);font-size:.65rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--micro);margin-bottom:1rem;
+}
+.product-info h2{
+  font-family:var(--font-display);font-size:clamp(2.2rem,4vw,3.5rem);
+  font-weight:500;line-height:.95;margin-bottom:1rem;color:var(--fg);
+}
+.product-info .desc{
+  font-family:var(--font-body);font-size:.85rem;line-height:1.7;
+  color:var(--muted);margin-bottom:1.75rem;
+}
+.product-info .cta{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:.65rem 1.4rem;border:1px solid var(--accent);
+  color:var(--accent);font-family:var(--font-body);font-size:.7rem;
+  letter-spacing:.15em;text-transform:uppercase;text-decoration:none;
+  transition:background .25s,color .25s;
+}
+.product-info .cta:hover{background:var(--accent);color:var(--bg)}
+
+/* ========== PROGRESS BAR — BOTTOM ========== */
+#progress-bar{
+  position:fixed;bottom:var(--ui-inset);left:50%;transform:translateX(-50%);
+  z-index:10;display:flex;gap:0;align-items:center;
+}
+.progress-segment{
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  cursor:pointer;padding:0 .75rem;position:relative;
+}
+.progress-segment .seg-line{
+  width:60px;height:2px;background:var(--muted);opacity:.3;
+  transition:opacity .3s,background .3s;
+}
+.progress-segment.active .seg-line{opacity:1;background:var(--accent)}
+.progress-segment .seg-label{
+  font-family:var(--font-body);font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);
+  transition:color .3s;
+}
+.progress-segment.active .seg-label{color:var(--accent)}
+.progress-segment.active .seg-label{font-weight:600}
+
+/* ========== FACE CAPTION — BOTTOM CENTER ========== */
+#face-caption{
+  position:fixed;bottom:calc(var(--ui-inset) + 4rem);left:50%;
+  transform:translateX(-50%);z-index:10;text-align:center;
+  pointer-events:none;user-select:none;
+}
+#face-caption-num{
+  font-family:var(--font-body);font-size:.55rem;letter-spacing:.3em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:.15rem;
+}
+#face-caption-name{
+  font-family:var(--font-display);font-size:clamp(1.4rem,3.5vw,2.5rem);
+  letter-spacing:.06em;color:var(--muted);opacity:.45;line-height:1;
+}
+
+/* ========== GRAIN OVERLAY ========== */
+#grain-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:9997;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat:repeat;opacity:.025;
+  animation:grain-flicker 8s steps(8) infinite;
+}
+@keyframes grain-flicker{
+  0%,100%{opacity:.02} 12.5%{opacity:.032} 25%{opacity:.018}
+  37.5%{opacity:.04} 50%{opacity:.025} 62.5%{opacity:.035}
+  75%{opacity:.028} 87.5%{opacity:.038}
+}
+
+/* ========== RESPONSIVE ========== */
+@media(max-width:768px){
+  :root{--ui-inset:1rem}
+  #cube{--s:min(80vw,50vh,380px)}
+  section{min-height:150vh;align-items:flex-end;padding:0 1rem 6rem}
+  .product-info{position:relative;left:auto;top:auto;transform:none;max-width:100%;margin-bottom:2rem;padding:0 1rem}
+  #face-caption{bottom:calc(var(--ui-inset) + 5rem)}
+  #progress-bar{bottom:1rem}
+  .progress-segment .seg-line{width:38px}
+  .progress-segment{padding:0 .35rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== GRAIN ========== -->
+<div id="grain-overlay" aria-hidden="true"></div>
+
+<!-- ========== 3D SCENE ========== -->
+<div id="scene">
+  <div id="cube">
+    <!-- Face 0: WYPIEKI -->
+    <div class="face" data-face="0">
+      <div class="wooden-frame">
+        <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      </div>
+      <span class="face-num">01</span>
+    </div>
+    <!-- Face 1: ŻUR -->
+    <div class="face" data-face="1">
+      <div class="wooden-frame">
+        <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      </div>
+      <span class="face-num">02</span>
+    </div>
+    <!-- Face 2: CIASTA -->
+    <div class="face" data-face="2">
+      <div class="wooden-frame">
+        <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      </div>
+      <span class="face-num">03</span>
+    </div>
+    <!-- Face 3: LODY -->
+    <div class="face" data-face="3">
+      <div class="wooden-frame">
+        <span class="corner corner-tl"></span><span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      </div>
+      <span class="face-num">04</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== LEFT COLUMN — PRODUCT INFO ========== -->
+<div class="product-info" id="product-info">
+  <div class="tag">01 / Nasze produkty</div>
+  <h2>Wypieki</h2>
+  <p class="desc">Chleby na zakwasie, bułki pszenne i żytnie — tradycyjne receptury z lokalnych składników, bez sztucznych polepszaczy.</p>
+  <a href="#" class="cta">Zobacz wszystkie →</a>
+</div>
+
+<!-- ========== SCROLL CONTAINER ========== -->
+<div id="scroll_container">
+  <section id="s0"></section>
+  <section id="s1"></section>
+  <section id="s2"></section>
+  <section id="s3"></section>
+</div>
+
+<!-- ========== FACE CAPTION ========== -->
+<div id="face-caption">
+  <div id="face-caption-num">01</div>
+  <div id="face-caption-name">WYPIEKI</div>
+</div>
+
+<!-- ========== PROGRESS BAR ========== -->
+<div id="progress-bar">
+  <div class="progress-segment active" data-stop="0">
+    <div class="seg-line"></div>
+    <div class="seg-label">Wypieki</div>
+  </div>
+  <div class="progress-segment" data-stop="1">
+    <div class="seg-line"></div>
+    <div class="seg-label">Żur</div>
+  </div>
+  <div class="progress-segment" data-stop="2">
+    <div class="seg-line"></div>
+    <div class="seg-label">Ciasta</div>
+  </div>
+  <div class="progress-segment" data-stop="3">
+    <div class="seg-line"></div>
+    <div class="seg-label">Lody</div>
+  </div>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+(function(){
+  'use strict';
+
+  /* ========== DATA ========== */
+  const PRODUCTS = [
+    {
+      name:'WYPIEKI',
+      title:'Wypieki',
+      tag:'01 / Nasze produkty',
+      desc:'Chleby na zakwasie, bułki pszenne i żytnie — tradycyjne receptury z lokalnych składników, bez sztucznych polepszaczy.',
+      img:'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=85',
+      cta:'#produkty-wypieki'
+    },
+    {
+      name:'ŻUR',
+      title:'Żur',
+      tag:'02 / Naturalny specjał',
+      desc:'Naturalny żur butelkowany z żytniego zakwasu. Prawdziwy śląski smak — bez konserwantów, bez ulepszaczy. Tradycja w butelce.',
+      img:'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=85',
+      cta:'#produkty-zur'
+    },
+    {
+      name:'CIASTA',
+      title:'Ciasta',
+      tag:'03 / Cukiernia',
+      desc:'Serniki, drożdżówki, pączki — domowe ciasta z naturalnych składników. Cukiernia z wieloletnią tradycją, bez chemii i skrótów.',
+      img:'https://images.unsplash.com/photo-1558303847-f5cd3f0e3a49?auto=format&fit=crop&w=600&q=85',
+      cta:'#produkty-ciasta'
+    },
+    {
+      name:'LODY RZEMIEŚLNICZE',
+      title:'Lody Rzemieślnicze',
+      tag:'04 / Ręczna robota',
+      desc:'Ręcznie robione lody z naturalnych składników — kremowe, intensywne w smaku. Smak lata na Śląsku, bez sztucznych barwników.',
+      img:'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=600&q=85',
+      cta:'#produkty-lody'
+    }
+  ];
+
+  const N = 4; // 4 faces/products
+
+  /* STOPS: rotation on Y-axis only (no top/bottom, so rx always 0) */
+  const STOPS = [
+    { ry: 0 },     // Face 0: WYPIEKI
+    { ry: -90 },   // Face 1: ŻUR
+    { ry: -180 },  // Face 2: CIASTA
+    { ry: -270 },  // Face 3: LODY
+  ];
+
+  /* ========== DOM REFS ========== */
+  const dom = {
+    cube:document.getElementById('cube'),
+    faces:[...document.querySelectorAll('.face')],
+    scrollEl:document.getElementById('scroll_container'),
+    productInfo:document.getElementById('product-info'),
+    captionNum:document.getElementById('face-caption-num'),
+    captionName:document.getElementById('face-caption-name'),
+    progressBar:document.getElementById('progress-bar')
+  };
+
+  const sections = [...document.querySelectorAll('#scroll_container section')];
+  const progressSegs = [...document.querySelectorAll('.progress-segment')];
+
+  /* ========== IMAGE MANAGEMENT ========== */
+  const faceImgIdx = new Array(4).fill(-1);
+  const imagePromises = new Map();
+
+  const preloadImage = (src) => {
+    if(imagePromises.has(src)) return imagePromises.get(src);
+    const p = (async () => {
+      const img = new Image();img.src = src;
+      await img.decode().catch(()=>{});
+      return img;
+    })();
+    imagePromises.set(src,p);
+    return p;
+  };
+
+  // Preload all images
+  PRODUCTS.forEach(p => preloadImage(p.img));
+
+  async function setFaceImage(faceIdx, imgIdx){
+    if(faceImgIdx[faceIdx] === imgIdx) return;
+    faceImgIdx[faceIdx] = imgIdx;
+
+    const src = PRODUCTS[imgIdx].img;
+    const face = dom.faces[faceIdx];
+    await preloadImage(src);
+    if(faceImgIdx[faceIdx] !== imgIdx) return;
+
+    const frame = face.querySelector('.wooden-frame');
+    let img = frame.querySelector('img');
+    if(!img){
+      img = new Image();
+      frame.appendChild(img);
+    }
+    img.alt = PRODUCTS[imgIdx].name;
+    img.src = src;
+  }
+
+  // Load initial images
+  for(let i=0;i<N;i++) setFaceImage(i,i);
+
+  /* ========== UPDATE UI ========== */
+  let lastFaceIdx = -1;
+
+  const updateUI = (smooth) => {
+    const t = smooth * (N - 1);
+    const idx = Math.min(N-1, Math.max(0, Math.round(t)));
+    const faceIdx = idx;
+
+    if(faceIdx !== lastFaceIdx){
+      lastFaceIdx = faceIdx;
+      const p = PRODUCTS[faceIdx];
+
+      // Caption
+      dom.captionNum.textContent = String(faceIdx+1).padStart(2,'0');
+      dom.captionName.textContent = p.name;
+
+      // Progress bar
+      progressSegs.forEach((seg,i) => seg.classList.toggle('active', i===faceIdx));
+
+      // Left column
+      dom.productInfo.querySelector('.tag').textContent = p.tag;
+      dom.productInfo.querySelector('h2').textContent = p.title;
+      dom.productInfo.querySelector('.desc').textContent = p.desc;
+      dom.productInfo.querySelector('.cta').setAttribute('href', p.cta);
+    }
+  };
+
+  /* ========== SET CUBE TRANSFORM ========== */
+  const easeInOutQuad = t => t<.5 ? 2*t*t : -1+(4-2*t)*t;
+
+  const setCubeTransform = (s) => {
+    const t = s * (N - 1);
+    const i = Math.min(Math.floor(t), N-2);
+    const f = easeInOutQuad(t - i);
+    const a = STOPS[i];
+    const b = STOPS[i+1];
+    const ry = a.ry + (b.ry - a.ry) * f;
+    dom.cube.style.transform = `rotateY(${ry}deg)`;
+  };
+
+  /* ========== SCROLL MATH ========== */
+  let maxScroll = 1;
+  let sectionTops = [];
+
+  const buildSectionTops = () => {
+    sectionTops = sections.map(s => s.getBoundingClientRect().top + window.scrollY);
+  };
+
+  const resize = () => {
+    maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    buildSectionTops();
+  };
+
+  resize();
+
+  /* ========== SMOOTH SCROLL + MOMENTUM ========== */
+  let tgt = 0;
+  let smooth = 0;
+  let velocity = 0;
+  const ease = 0.1;
+
+  window.addEventListener('scroll',()=>{
+    tgt = maxScroll>0 ? scrollY/maxScroll : 0;
+    tgt = Math.max(0, Math.min(1, tgt));
+  },{passive:true});
+
+  window.addEventListener('wheel',(e)=>{
+    e.preventDefault();
+    const linePx=16, pagePx=innerHeight*.9;
+    const delta = e.deltaMode===1 ? e.deltaY*linePx : e.deltaMode===2 ? e.deltaY*pagePx : e.deltaY;
+    if(Math.abs(delta)<5) return;
+    stopAnchorAnim();
+    velocity += delta;
+    velocity = Math.max(-600, Math.min(600, velocity));
+  },{passive:false});
+
+  window.addEventListener('resize',()=>{
+    resize();
+    tgt = maxScroll>0 ? scrollY/maxScroll : 0;
+    smooth = tgt;
+  });
+
+  let lastNow = performance.now();
+
+  const frame = (now) => {
+    requestAnimationFrame(frame);
+    if(document.hidden){lastNow=now;return;}
+
+    const dt = Math.min((now-lastNow)/1000, .05);
+    lastNow = now;
+
+    const friction = Math.abs(velocity)>200 ? .8 : .9;
+    velocity *= Math.pow(friction, dt*60);
+    if(Math.abs(velocity)<.01) velocity=0;
+
+    if(Math.abs(velocity)>.2){
+      const next = Math.max(0, Math.min(scrollY + velocity*ease, maxScroll));
+      window.scrollTo(0, next);
+      tgt = next/maxScroll;
+    }
+
+    smooth += (tgt - smooth) * (1 - Math.exp(-dt*8));
+    smooth = Math.max(0, Math.min(1, smooth));
+
+    updateUI(smooth);
+    setCubeTransform(smooth);
+  };
+  requestAnimationFrame(frame);
+
+  /* ========== ANCHOR SCROLLING ========== */
+  let anchorAnim = null;
+
+  const stopAnchorAnim = () => {
+    if(anchorAnim){cancelAnimationFrame(anchorAnim);anchorAnim=null;}
+  };
+
+  const easeInOutCubic = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+
+  const smoothScrollToY = (targetY, duration=900) => {
+    stopAnchorAnim();velocity=0;
+    const startY=window.scrollY, diff=targetY-startY, start=performance.now();
+    const tick = (now) => {
+      const p=Math.min(1,(now-start)/duration);
+      const y=startY+diff*easeInOutCubic(p);
+      window.scrollTo(0,y);
+      tgt=y/maxScroll;smooth=tgt;
+      if(p<1) anchorAnim=requestAnimationFrame(tick);else anchorAnim=null;
+    };
+    anchorAnim=requestAnimationFrame(tick);
+  };
+
+  /* ========== PROGRESS BAR CLICKS ========== */
+  progressSegs.forEach(seg => {
+    seg.addEventListener('click',()=>{
+      const stopIdx = parseInt(seg.dataset.stop);
+      if(stopIdx >= 0 && stopIdx < sections.length){
+        const target = sections[stopIdx];
+        const targetY = target.getBoundingClientRect().top + window.scrollY;
+        smoothScrollToY(targetY, 700);
+      }
+    });
+  });
+
+  /* ========== LEFT COLUMN CTA CLICK ========== */
+  dom.productInfo.querySelector('.cta').addEventListener('click',(e)=>{
+    e.preventDefault();
+    const activeIdx = lastFaceIdx >= 0 ? lastFaceIdx : 0;
+    const target = sections[activeIdx];
+    const targetY = target.getBoundingClientRect().top + window.scrollY;
+    smoothScrollToY(targetY, 700);
+  });
+
+  document.addEventListener('touchstart',stopAnchorAnim,{passive:true});
+  document.addEventListener('mousedown',stopAnchorAnim,{passive:true});
+
+})();
+</script>
+
+</body>
+</html>
